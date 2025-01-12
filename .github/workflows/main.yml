@@ -1,0 +1,26 @@
+name: Move HontelOS folder to src
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  move-to-src:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Create src folder and move HontelOS into it
+        run: |
+          mkdir -p src
+          mv HontelOS src/
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your-email@example.com"
+          git add .
+          git commit -m "Moved HontelOS folder into src"
+          git push
