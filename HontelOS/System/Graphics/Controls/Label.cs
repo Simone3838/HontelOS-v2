@@ -4,15 +4,8 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
-using Cosmos.System;
 using Cosmos.System.Graphics.Fonts;
-using HontelOS.System.Graphics;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HontelOS.System.Graphics.Controls
 {

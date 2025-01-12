@@ -5,14 +5,9 @@
 */
 
 using System.Drawing;
-using System.Collections.Generic;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 using HontelOS.System.Graphics.Controls;
 using Cosmos.Core;
 using HontelOS.System.Graphics;
-using HontelOS.Resources;
 
 namespace HontelOS.System.Applications.About
 {

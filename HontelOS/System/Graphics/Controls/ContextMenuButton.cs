@@ -5,7 +5,6 @@
 */
 
 using Cosmos.System;
-using HontelOS.System.Graphics;
 using System;
 using System.Drawing;
 

@@ -6,7 +6,6 @@
 
 using Cosmos.System.Graphics;
 using Cosmos.System.Graphics.Fonts;
-using HontelOS.System.Graphics;
 using System;
 using System.Drawing;
 

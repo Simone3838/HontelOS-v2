@@ -4,7 +4,6 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
-using Cosmos.System.Graphics;
 using HontelOS.System.Graphics;
 using HontelOS.System.Graphics.Controls;
 using System;

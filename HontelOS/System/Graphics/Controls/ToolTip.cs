@@ -5,8 +5,6 @@
 */
 
 using Cosmos.System.Graphics;
-using Cosmos.System.Graphics.Fonts;
-using System;
 
 namespace HontelOS.System.Graphics.Controls
 {

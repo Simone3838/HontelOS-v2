@@ -4,7 +4,6 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 
