@@ -19,8 +19,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your-email@example.com"
+          git config --global user.name "Schaapie-D2"
+          git config --global user.email "jortyt11@gmail.com"
           git add .
           git commit -m "Moved HontelOS folder into src"
           git push
