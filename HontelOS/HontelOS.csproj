@@ -50,6 +50,8 @@ namespace HontelOS.System
 	</Target>
 
     <ItemGroup>
+      <EmbeddedResource Include="Resources\Images\Branding\HontelOS_Logo_Black.bmp" />
+      <EmbeddedResource Include="Resources\Images\Branding\HontelOS_Logo_White.bmp" />
       <EmbeddedResource Include="Resources\Images\System_App_List.bmp" />
       <EmbeddedResource Include="Resources\Images\BG1.bmp" />
       <EmbeddedResource Include="Resources\Images\Branding\Hontel_Logo.bmp" />

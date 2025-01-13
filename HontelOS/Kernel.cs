@@ -77,7 +77,7 @@ namespace HontelOS
 
 
                 // Boot progress image
-                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 4, (int)screenHeight / 4, (int)screenHeight / 2, (int)screenHeight / 2);
+                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 8, (int)screenHeight / 2 - (int)screenHeight/ 8, (int)screenHeight / 4, (int)screenHeight / 4);
                 canvas.Display();
 
                 Cosmos.HAL.Global.PIT.Wait(5000);
@@ -232,7 +232,7 @@ namespace HontelOS
         static void ShutdownPrepare()
         {
             canvas.Clear();
-            canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 4, (int)screenHeight / 4, (int)screenHeight / 2, (int)screenHeight / 2);
+            canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 8, (int)screenHeight / 2 - (int)screenHeight / 8, (int)screenHeight / 4, (int)screenHeight / 4);
             canvas.Display();
 
             foreach (int wid in WindowManager.Windows.Keys)
