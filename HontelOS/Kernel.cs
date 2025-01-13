@@ -38,8 +38,8 @@ namespace HontelOS
         public static uint screenWidth = 1920;
         public static uint screenHeight = 1200;
 
-        static Bitmap logo = ResourceManager.Image__Hontel_Logo;
-        static Bitmap BG1 = ResourceManager.Image__Background_1;
+        static Bitmap logo = ResourceManager.HontelLogo;
+        static Bitmap BG1 = ResourceManager.Background1;
 
         public static List<SystemControl> systemControls = new List<SystemControl>();
         public static List<Process> Processes = new List<Process>();
@@ -77,8 +77,10 @@ namespace HontelOS
 
 
                 // Boot progress image
-                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)logo.Width / 5, (int)screenHeight / 2 - (int)logo.Height / 5, (int)logo.Width / (int)2.5f, (int)logo.Height / (int)2.5f);
+                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 4, (int)screenHeight / 4, (int)screenHeight / 2, (int)screenHeight / 2);
                 canvas.Display();
+
+                Cosmos.HAL.Global.PIT.Wait(5000);
 
                 MouseManager.ScreenWidth = screenWidth;
                 MouseManager.ScreenHeight = screenHeight;
@@ -230,7 +232,7 @@ namespace HontelOS
         static void ShutdownPrepare()
         {
             canvas.Clear();
-            canvas.DrawImage(logo, (int)screenWidth / 2 - (int)logo.Width / 5, (int)screenHeight / 2 - (int)logo.Height / 5, (int)logo.Width / (int)2.5f, (int)logo.Height / (int)2.5f);
+            canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 4, (int)screenHeight / 4, (int)screenHeight / 2, (int)screenHeight / 2);
             canvas.Display();
 
             foreach (int wid in WindowManager.Windows.Keys)

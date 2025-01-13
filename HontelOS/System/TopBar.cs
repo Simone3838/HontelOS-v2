@@ -21,7 +21,7 @@ namespace HontelOS.System
         Canvas c = Kernel.canvas;
         Style Style = Kernel.style;
 
-        Bitmap logo = ResourceManager.Image__Hontel_Logo;
+        Bitmap logo = ResourceManager.HontelLogo;
 
         public void Draw()
         {

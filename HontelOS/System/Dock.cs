@@ -23,8 +23,8 @@ namespace HontelOS.System
         public Dictionary<int, ToolTip> windowTooltips = new Dictionary<int, ToolTip>();
         ToolTip launchPadToolTip = new ToolTip("Launch pad", ToolTip.ToolTipOrginDirection.Down, 0, 0);
 
-        Bitmap appList = ResourceManager.Image__System_App_List;
-        Bitmap applicationIcon = ResourceManager.Image__System_Application;
+        Bitmap appList = ResourceManager.SystemAppListIcon;
+        Bitmap applicationIcon = ResourceManager.SystemApplicationIcon;
 
         public Dock()
         {
