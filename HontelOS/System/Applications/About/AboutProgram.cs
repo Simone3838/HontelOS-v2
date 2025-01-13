@@ -1,6 +1,6 @@
 ﻿/*
 * PROJECT:          HontelOS
-* CONTENT:          About program for HontelOS
+* CONTENT:          About this PC program for HontelOS
 * PROGRAMMERS:      Jort van Dalen
 */
 
@@ -20,6 +20,8 @@ namespace HontelOS.System.Applications.About
             new Label("CPU: " + CPU.GetCPUBrandString(), Style.SystemFont, Color.Black, 25, 25 + Style.SystemFont.Height * 2, this);
             new Label("RAM: " + StorageSizeConverter.AutoConvert(StorageSize.Megabyte, (long)GCImplementation.GetAvailableRAM()).Item3, Style.SystemFont, Color.Black, 25, 25 + Style.SystemFont.Height * 3, this);
             new Label("Storage: " + StorageSizeConverter.AutoConvert(StorageSize.Byte, Kernel.fileSystem.GetTotalSize("0:\\")).Item3, Style.SystemFont, Color.Black, 25, 25 + Style.SystemFont.Height * 4, this);
+
+            new Button("About HontelOS", () => new AboutHontelOSProgram(), 10, Height - 35, 125, 25, this);
 
             WindowManager.Register(this);
         }
