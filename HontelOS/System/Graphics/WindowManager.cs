@@ -59,8 +59,6 @@ namespace HontelOS.System.Graphics
         {
             if (Windows.ContainsKey(WID))
                 FocusedWindow = WID;
-            else
-                FocusedWindow = null;
         }
 
         public static bool IsAlive(int WID) { return Windows.ContainsKey(WID); }

@@ -45,23 +45,26 @@ namespace HontelOS.System.Graphics.Controls
 
         public void Update()
         {
-            for (int i = 0; i < items.Length; i++)
+            if(Kernel.MouseInArea(x, y, x + width, y + items.Length * 18))
             {
-                if (Kernel.MouseInArea(x, y + i * 16, x + width, y + 16 + i * 18))
+                for (int i = 0; i < items.Length; i++)
                 {
-                    c.DrawFilledRectangle(Style.ContextMenu_HoverColor, x, y + i * 16, 150, 16);
+                    if (Kernel.MouseInArea(x, y + i * 16, x + width, y + 16 + i * 18))
+                    {
+                        c.DrawFilledRectangle(Style.ContextMenu_HoverColor, x, y + i * 16, 150, 16);
+
+                        if(Kernel.MouseClick())
+                        {
+                            actions[i]?.Invoke(i);
+                            Kernel.systemControls.Remove(this);
+                            break;
+                        }
+                    }
                 }
-                if (Kernel.MouseInArea(x, y + i * 16, x + width, y + 16 + i * 18) && Kernel.MouseClick())
-                {
-                    actions[i]?.Invoke(i);
-                    Kernel.systemControls.Remove(this);
-                    break;
-                }
-                if (!Kernel.MouseInArea(x, y, x + width, y + items.Length * 18) && Kernel.MouseClick())
-                {
-                    Kernel.systemControls.Remove(this);
-                    break;
-                }
+            }
+            else if(Kernel.MouseClick())
+            {
+                Kernel.systemControls.Remove(this);
             }
         }
     }

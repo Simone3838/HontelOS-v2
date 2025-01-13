@@ -25,6 +25,7 @@ namespace HontelOS.System.Graphics.Controls
             Height = height;
             OnStartHover.Add(() => Window.IsDirty = true);
             OnEndHover.Add(() => Window.IsDirty = true);
+            OnClick.Add(() => Window.IsDirty = true);
         }
 
         public override void Draw()

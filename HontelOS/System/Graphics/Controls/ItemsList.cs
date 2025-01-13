@@ -83,7 +83,7 @@ namespace HontelOS.System.Graphics.Controls
                 if((key == ConsoleKeyEx.UpArrow || key == ConsoleKeyEx.DownArrow) && SelectedIndex >= Items.Count)
                     SelectedIndex = Items.Count - 1;
             }
-            if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height))
+            if (IsHovering)
             {
                 if (MouseManager.ScrollDelta > 0 && scrollPosition > 0)
                     scrollPosition--;

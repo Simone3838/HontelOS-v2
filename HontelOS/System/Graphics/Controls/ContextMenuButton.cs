@@ -32,9 +32,9 @@ namespace HontelOS.System.Graphics.Controls
         {
             if (IsDisabled)
                 c.DrawFilledRoundedRectangle(Style.Button_DisabledColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
-            else if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height) && MouseManager.MouseState == MouseState.Left)
+            else if (IsHovering && MouseManager.MouseState == MouseState.Left)
                 c.DrawFilledRoundedRectangle(Style.Button_PressedColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
-            else if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height))
+            else if (IsHovering)
                 c.DrawFilledRoundedRectangle(Style.Button_HoverColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
             else
                 c.DrawFilledRoundedRectangle(Style.Button_NormalColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
@@ -44,7 +44,7 @@ namespace HontelOS.System.Graphics.Controls
         public override void Update()
         {
             base.Update();
-            if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height) && Kernel.MouseClick())
+            if (IsHovering && Kernel.MouseClick())
             {
                 ContextMenu menu = new ContextMenu(items, actions, Window.ViewX + X, Window.ViewY + Y + Height, Width);
                 menu.Show();

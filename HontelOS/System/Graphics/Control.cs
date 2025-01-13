@@ -49,24 +49,16 @@ namespace HontelOS.System.Graphics
         {
             if (Kernel.MouseClick())
                 IsSelected = false;
-            if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height) && Kernel.MouseClick())
-            {
-                foreach(var a in OnClick) a.Invoke();
-                IsSelected = true;
-            }
-            if (IsSelected && Kernel.MouseClickSec())
-                foreach(var a in OnClickSec) a.Invoke();
-            if (Kernel.MouseClickSec() && ContextMenu != null && IsSelected)
-                ContextMenu.Show();
+
             if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height))
             {
                 Kernel.cursor = Cursor;
 
-                if(ToolTip != null)
+                if (ToolTip != null)
                     ToolTip.Show();
 
-                if(!IsHovering)
-                    foreach(var a in OnStartHover) a.Invoke();
+                if (!IsHovering)
+                    foreach (var a in OnStartHover) a.Invoke();
 
                 IsHovering = true;
             }
@@ -76,10 +68,22 @@ namespace HontelOS.System.Graphics
                     ToolTip.Hide();
 
                 if (IsHovering)
-                    foreach(var a in OnEndHover) a.Invoke();
+                    foreach (var a in OnEndHover) a.Invoke();
 
                 IsHovering = false;
             }
+
+            if (IsHovering && Kernel.MouseClick())
+            {
+                foreach(var a in OnClick) a.Invoke();
+                IsSelected = true;
+            }
+
+            if (IsSelected && Kernel.MouseClickSec())
+                foreach(var a in OnClickSec) a.Invoke();
+            if (Kernel.MouseClickSec() && ContextMenu != null && IsSelected)
+                ContextMenu.Show();
+            
             if(MouseManager.DeltaX != 0 || MouseManager.DeltaY != 0)
                 foreach(var a in OnMouseMove) a.Invoke();
         }

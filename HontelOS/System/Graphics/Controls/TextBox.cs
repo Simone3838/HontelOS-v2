@@ -54,8 +54,11 @@ namespace HontelOS.System.Graphics.Controls
             {
                 var key = KeyboardManagerExt.ReadKey().Key;
 
-                if (key == ConsoleKeyEx.Backspace && Text.Length > 0)
-                    Text = Text.Remove(Text.Length - 1);
+                if (key == ConsoleKeyEx.Backspace)
+                {
+                    if(Text.Length > 0)
+                        Text = Text.Remove(Text.Length - 1);
+                }
                 else if (key == ConsoleKeyEx.Enter)
                     OnSubmit?.Invoke(Text);
                 else

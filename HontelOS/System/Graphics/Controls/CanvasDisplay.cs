@@ -24,7 +24,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
-            c.DrawImage(Canvas.ExtractImage(0, 0, Width, Height), 0, 0);
+            c.DrawImage(Canvas.Bitmap, 0, 0);
         }
 
         public void SetSize(int width, int height)
