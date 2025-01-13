@@ -14,8 +14,8 @@ namespace HontelOS.Resources
     {
         #region Images
         [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.Branding.Hontel_Logo.bmp")] readonly static byte[] Image__Hontel_LogoRaw; public readonly static Bitmap HontelLogo = new Bitmap(Image__Hontel_LogoRaw, ColorOrder.RGB);
-        [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.Branding.Hontel_Logo.bmp")] readonly static byte[] Image__HontelOS_Logo_BlackRaw; public readonly static Bitmap HontelOSLogoBlack = new Bitmap(Image__HontelOS_Logo_BlackRaw, ColorOrder.RGB);
-        [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.Branding.Hontel_Logo.bmp")] readonly static byte[] Image__HontelOS_Logo_WhiteRaw; public readonly static Bitmap HontelOSLogoWhite = new Bitmap(Image__HontelOS_Logo_WhiteRaw, ColorOrder.RGB);
+        [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.Branding.HontelOS_Logo_Black.bmp")] readonly static byte[] Image__HontelOS_Logo_BlackRaw; public readonly static Bitmap HontelOSLogoBlack = new Bitmap(Image__HontelOS_Logo_BlackRaw, ColorOrder.RGB);
+        [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.Branding.HontelOS_Logo_White.bmp")] readonly static byte[] Image__HontelOS_Logo_WhiteRaw; public readonly static Bitmap HontelOSLogoWhite = new Bitmap(Image__HontelOS_Logo_WhiteRaw, ColorOrder.RGB);
 
         [ManifestResourceStream(ResourceName = "HontelOS.Resources.Images.BG1.bmp")] readonly static byte[] Image__Background_1Raw; public readonly static Bitmap Background1 = new Bitmap(Image__Background_1Raw, ColorOrder.RGB);
         #endregion
