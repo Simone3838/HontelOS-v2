@@ -28,23 +28,21 @@ namespace HontelOS.System.Graphics.Controls
             Width = width;
             Height = height;
             Cursor = Cursor.Text;
-            OnStartHover.Add(() => Window.IsDirty = true);
-            OnEndHover.Add(() => Window.IsDirty = true);
         }
 
         public override void Draw()
         {
             if (IsDisabled)
-                c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, X, Y, Width, Height, 5);
             else if (IsHovering)
-                c.DrawFilledRoundedRectangle(Style.TextBox_HoverColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_HoverColor, X, Y, Width, Height, 5);
             else
-                c.DrawFilledRoundedRectangle(Style.TextBox_NormalColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_NormalColor, X, Y, Width, Height, 5);
 
             if (string.IsNullOrEmpty(Text))
-                c.DrawString(Placeholder, Style.SystemFont, Color.Gray, Window.ViewX + X + 10, Window.ViewY + Y + Height / 2 - Style.SystemFont.Height / 2);
+                c.DrawString(Placeholder, Style.SystemFont, Color.Gray, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
             else
-                c.DrawString(Text, Style.SystemFont, Color.Black, Window.ViewX + X + 10, Window.ViewY + Y + Height / 2 - Style.SystemFont.Height / 2);
+                c.DrawString(Text, Style.SystemFont, Color.Black, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
         }
 
         public override void Update()

@@ -474,8 +474,8 @@ namespace HontelOS.System.Graphics
         public void DrawFilledRoundedRectangle(Color color, int x, int y, int width, int height, int radius)
         {
             DrawFilledRectangle(color, x + radius, y, width - 2 * radius, height);
-            DrawFilledRectangle(color, x, y + radius, radius, height - 2 * radius);
-            DrawFilledRectangle(color, x + width - radius, y + radius, radius, height - 2 * radius);
+            DrawFilledRectangle(color, x, y + radius, radius + 1, height - 2 * radius);
+            DrawFilledRectangle(color, x + width - radius - 1, y + radius, radius + 2, height - 2 * radius);
             DrawFilledCircle(color, x + radius, y + radius, radius);
             DrawFilledCircle(color, x + width - radius - 1, y + radius, radius);
             DrawFilledCircle(color, x + radius, y + height - radius - 1, radius);

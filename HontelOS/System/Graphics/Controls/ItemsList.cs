@@ -36,7 +36,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
-            c.DrawFilledRoundedRectangle(Style.ItemsList_BackgroundColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+            c.DrawFilledRoundedRectangle(Style.ItemsList_BackgroundColor, X, Y, Width, Height, 5);
 
             int visibleItemCount = Height / itemHeight;
 
@@ -52,16 +52,16 @@ namespace HontelOS.System.Graphics.Controls
                 if (!string.IsNullOrEmpty(Items[itemIndex]))
                 {
                     if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Window.ViewX + X + Width, Window.ViewY + Y + i * itemHeight + itemHeight) && SelectedIndex != i)
-                        c.DrawFilledRoundedRectangle(Style.ItemsList_HoverColor, Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Width, itemHeight, 5);
+                        c.DrawFilledRoundedRectangle(Style.ItemsList_HoverColor, X, Y + i * itemHeight, Width, itemHeight, 5);
                     if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Window.ViewX + X + Width, Window.ViewY + Y + i * itemHeight + itemHeight) && Kernel.MouseClick())
                         SelectedIndex = i;
                     if (SelectedIndex == i)
                     {
-                        c.DrawFilledRoundedRectangle(Style.ItemsList_SelectedColor, Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Width, itemHeight, 5);
-                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.White, Window.ViewX + X + 2, Window.ViewY + Y + i * itemHeight);
+                        c.DrawFilledRoundedRectangle(Style.ItemsList_SelectedColor, X, Y + i * itemHeight, Width, itemHeight, 5);
+                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.White, X + 2, Y + i * itemHeight);
                     }
                     else
-                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.Black, Window.ViewX + X + 2, Window.ViewY + Y + i * itemHeight);
+                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.Black, X + 2, Y + i * itemHeight);
                 }
             }
         }
@@ -82,6 +82,8 @@ namespace HontelOS.System.Graphics.Controls
 
                 if((key == ConsoleKeyEx.UpArrow || key == ConsoleKeyEx.DownArrow) && SelectedIndex >= Items.Count)
                     SelectedIndex = Items.Count - 1;
+
+                Window.IsDirty = true;
             }
             if (IsHovering)
             {
@@ -89,8 +91,6 @@ namespace HontelOS.System.Graphics.Controls
                     scrollPosition--;
                 else if (MouseManager.ScrollDelta < 0 && scrollPosition < Items.Count - Height / itemHeight)
                     scrollPosition++;
-
-                Window.IsDirty = true;
             }
         }
     }

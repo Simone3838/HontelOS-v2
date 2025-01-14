@@ -17,7 +17,7 @@ namespace HontelOS.System.Graphics
 
         public MessageBox(string title, string message, Action<MessageBoxResult> onSubmit, MessageBoxButtons buttons) : base(title, WindowStyle.Dialog, (int)Kernel.screenWidth / 2 - 400, (int)Kernel.screenHeight / 2 - 300, 200, 100 + 45)
         {
-            Width = Style.SystemFont.Width * message.Length + 50;
+            Resize(X, Y, Style.SystemFont.Width * message.Length + 50, Height);
             this.onSubmit = onSubmit;
             OnClose.Add(onClose);
 

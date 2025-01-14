@@ -31,14 +31,15 @@ namespace HontelOS.System.Graphics.Controls
         public override void Draw()
         {
             if (IsDisabled)
-                c.DrawFilledRoundedRectangle(Style.Button_DisabledColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.Button_DisabledColor, X, Y, Width, Height, 5);
             else if (IsHovering && MouseManager.MouseState == MouseState.Left)
-                c.DrawFilledRoundedRectangle(Style.Button_PressedColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.Button_PressedColor, X, Y, Width, Height, 5);
             else if (IsHovering)
-                c.DrawFilledRoundedRectangle(Style.Button_HoverColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.Button_HoverColor, X, Y, Width, Height, 5);
             else
-                c.DrawFilledRoundedRectangle(Style.Button_NormalColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
-            c.DrawString(Text, Style.SystemFont, Color.White, Window.ViewX + X + Width / 2 - Style.SystemFont.Width * Text.Length / 2, Window.ViewY + Y + Height / 2 - Style.SystemFont.Height / 2);
+                c.DrawFilledRoundedRectangle(Style.Button_NormalColor, X, Y, Width, Height, 5);
+
+            c.DrawString(Text, Style.SystemFont, Color.White, X + Width / 2 - Style.SystemFont.Width * Text.Length / 2, Y + Height / 2 - Style.SystemFont.Height / 2);
         }
 
         public override void Update()

@@ -27,7 +27,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
-            c.DrawString(Text, Font, Color, Window.ViewX + X, Window.ViewY + Y);
+            c.DrawString(Text, Font, Color, X, Y);
         }
     }
 }

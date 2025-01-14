@@ -4,6 +4,7 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
+using System.Drawing;
 using Cosmos.System.Graphics;
 
 namespace HontelOS.System.Graphics.Controls
@@ -24,7 +25,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
-            c.DrawImage(Image, Window.ViewX + X, Window.ViewY + Y, Width, Height);
+            c.DrawImageStretchAlpha(Image as Bitmap, new Rectangle(Window.ViewX + X, Window.ViewY + Y, (int)Image.Width, (int)Image.Height), new Rectangle(Window.ViewX + X, Window.ViewY + Y, Width, Height));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace HontelOS.System.Graphics
     {
         public Window Window;
 
-        public Canvas c = Kernel.canvas;
+        public DirectBitmap c { get; private set; }
         public Style Style = Kernel.style;
 
         public int X;
@@ -33,6 +33,7 @@ namespace HontelOS.System.Graphics
         public ToolTip ToolTip;
 
         public List<Action> OnClick = new();
+        public List<Action> OnEndClick = new();
         public List<Action> OnClickSec = new();
         public List<Action> OnStartHover = new();
         public List<Action> OnEndHover = new();
@@ -41,6 +42,14 @@ namespace HontelOS.System.Graphics
         public Control(Window window)
         {
             Window = window;
+            c = Window.canvas;
+
+            OnClick.Add(() => { Window.IsDirty = true; });
+            OnEndClick.Add(() => { Window.IsDirty = true; });
+            OnClickSec.Add(() => { Window.IsDirty = true; });
+            OnStartHover.Add(() => { Window.IsDirty = true; });
+            OnEndHover.Add(() => { Window.IsDirty = true; });
+
             Window.Controls.Add(this);
         }
 
@@ -59,6 +68,9 @@ namespace HontelOS.System.Graphics
 
                 if (!IsHovering)
                     foreach (var a in OnStartHover) a.Invoke();
+
+                if (MouseManager.DeltaX != 0 || MouseManager.DeltaY != 0)
+                    foreach (var a in OnMouseMove) a.Invoke();
 
                 IsHovering = true;
             }
@@ -79,13 +91,16 @@ namespace HontelOS.System.Graphics
                 IsSelected = true;
             }
 
-            if (IsSelected && Kernel.MouseClickSec())
-                foreach(var a in OnClickSec) a.Invoke();
+            if (IsSelected)
+            {
+                if(Kernel.MouseClickSec())
+                    foreach (var a in OnClickSec) a.Invoke();
+
+                if(MouseManager.MouseState != MouseState.Left && MouseManager.LastMouseState == MouseState.Left)
+                    foreach (var a in OnEndClick) a.Invoke();
+            } 
             if (Kernel.MouseClickSec() && ContextMenu != null && IsSelected)
                 ContextMenu.Show();
-            
-            if(MouseManager.DeltaX != 0 || MouseManager.DeltaY != 0)
-                foreach(var a in OnMouseMove) a.Invoke();
         }
     }
 }

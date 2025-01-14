@@ -30,34 +30,31 @@ namespace HontelOS.System.Graphics.Controls
             Width = width;
             Height = height;
             Cursor = Cursor.Text;
-
-            OnStartHover.Add(() => Window.IsDirty = true);
-            OnEndHover.Add(() => Window.IsDirty = true);
         }
 
         public override void Draw()
         {
             if (IsDisabled)
-                c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, X, Y, Width, Height, 5);
             else if (IsHovering)
-                c.DrawFilledRoundedRectangle(Style.TextBox_HoverColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_HoverColor, X, Y, Width, Height, 5);
             else
-                c.DrawFilledRoundedRectangle(Style.TextBox_NormalColor, Window.ViewX + X, Window.ViewY + Y, Width, Height, 5);
+                c.DrawFilledRoundedRectangle(Style.TextBox_NormalColor, X, Y, Width, Height, 5);
 
             if (Text.All(line => string.IsNullOrEmpty(line)))
             {
-                c.DrawString(Placeholder, Style.SystemFont, Color.Gray, Window.ViewX + X, Window.ViewY + Y);
+                c.DrawString(Placeholder, Style.SystemFont, Color.Gray, X, Y);
             }
             else
             {
                 for (int i = 0; i < Text.Count; i++)
                 {
-                    c.DrawString(Text[i], Style.SystemFont, Color.Black, Window.ViewX + X, Window.ViewY + Y + Style.SystemFont.Height * i);
+                    c.DrawString(Text[i], Style.SystemFont, Color.Black, X, Y + Style.SystemFont.Height * i);
                 }
             }
 
-            int linX = Window.ViewX + X + Style.SystemFont.Width * currentPosition;
-            int linY = Window.ViewY + Y + Style.SystemFont.Height * currentLine;
+            int linX = X + Style.SystemFont.Width * currentPosition;
+            int linY = Y + Style.SystemFont.Height * currentLine;
             c.DrawLine(Color.Black, linX, linY, linX, linY + Style.SystemFont.Height);
         }
 

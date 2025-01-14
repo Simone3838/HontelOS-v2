@@ -4,6 +4,7 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
+using Cosmos.Core;
 using Cosmos.System;
 using Cosmos.System.Graphics;
 using Cosmos.System.Graphics.Fonts;
@@ -16,6 +17,7 @@ namespace HontelOS.System.Graphics
     public class Window
     {
         Canvas c = Kernel.canvas;
+        public DirectBitmap canvas;
         public Style Style = Kernel.style;
 
         public string Title;
@@ -30,6 +32,8 @@ namespace HontelOS.System.Graphics
 
         public int ViewX;
         public int ViewY;
+        public int ViewXUpd;
+        public int ViewYUpd;
 
         public bool IsVisable = true;
         public bool CanClose = true;
@@ -48,9 +52,6 @@ namespace HontelOS.System.Graphics
         bool isHoldingHandel = false;
 
         Bitmap cachedViewArea = null;
-        bool isCacheInCue = false;
-        bool isReadyToCache = true;
-        bool isReadyToDrawCache = true;
 
         int oldX;
         int oldY;
@@ -68,6 +69,7 @@ namespace HontelOS.System.Graphics
             Y = y;
             Width = width;
             Height = height;
+            canvas = new DirectBitmap(width, height);
             BackgroundColor = Style.Window_BackgroundColor;
         }
 
@@ -82,7 +84,6 @@ namespace HontelOS.System.Graphics
 
             if (WindowStyle == WindowStyle.Normal)
             {
-                c.DrawFilledRectangle(BackgroundColor, X, Y + 32, Width, Height, true);//view area
                 c.DrawFilledTopRoundedRectangle(Style.Window_HandleColor, X, Y, Width, 32, 10);//handel
 
                 if (Icon != null)
@@ -105,7 +106,6 @@ namespace HontelOS.System.Graphics
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
-                c.DrawFilledRectangle(BackgroundColor, X, Y + 32, Width, Height, true);//view area
                 c.DrawFilledTopRoundedRectangle(Style.Window_HandleColor, X, Y, Width, 32, 10);//handel
 
                 if (Icon != null)
@@ -122,34 +122,28 @@ namespace HontelOS.System.Graphics
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
-                c.DrawFilledRectangle(BackgroundColor, X, Y, Width, Height + 32, true);//view area
+                
             }
 
-            if (!IsDirty && cachedViewArea != null && isReadyToDrawCache)
+            if (!IsDirty)
             {
                 if (WindowStyle != WindowStyle.Borderless)
-                    c.DrawImage(cachedViewArea, X, Y + 32, true);
+                    c.DrawImage(canvas.Bitmap, X, Y + 32, true);
                 else
-                    c.DrawImage(cachedViewArea, X, Y, true);
+                    c.DrawImage(canvas.Bitmap, X, Y, true);
 
                 return;
             }
 
+            canvas.Clear(BackgroundColor);
+
             foreach (Control c in Controls)
                 c.Draw();
 
-            if (IsVisable || IsVisable && isCacheInCue)
-            {
-                if (isReadyToCache)
-                {
-                    if (WindowStyle != WindowStyle.Borderless)
-                        cachedViewArea = c.GetImage(X, Y + 32, Width, Height);
-                    else
-                        cachedViewArea = c.GetImage(X, Y, Width, Height);
-
-                    isReadyToDrawCache = true;
-                }
-            }
+            if (WindowStyle != WindowStyle.Borderless)
+                c.DrawImage(canvas.Bitmap, X, Y + 32, true);
+            else
+                c.DrawImage(canvas.Bitmap, X, Y, true);
 
             IsDirty = false;
         }
@@ -158,13 +152,13 @@ namespace HontelOS.System.Graphics
         {
             if (WindowStyle == WindowStyle.Normal)
             {
+                if (isHoldingHandel)
+                { X = (int)MouseManager.X + dragOffsetX; Y = (int)MouseManager.Y + dragOffsetY; }
+
                 if (Kernel.MouseInArea(X, Y, X + Width, Y + Height + 32))
                 {
                     if (Kernel.MouseClick())
                         WindowManager.SetFocused(WID);
-
-                    isReadyToCache = false;
-                    isReadyToDrawCache = false;
 
                     if (Kernel.MouseInArea(X, Y, X + Width - 96, Y + 32) && MouseManager.MouseState == MouseState.Left && MouseManager.LastMouseState != MouseState.Left && !isHoldingHandel && WindowManager.FocusedWindow == WID)
                     { dragOffsetX = X - (int)MouseManager.X; dragOffsetY = Y - (int)MouseManager.Y; isHoldingHandel = true; }
@@ -176,23 +170,16 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 96, Y, X + Width - 64, Y + 32) && Kernel.MouseClick())
                         Minimize();
                 }
-                else
-                {
-                    isReadyToCache = true;
-                }
-
-                if (isHoldingHandel)
-                { X = (int)MouseManager.X + dragOffsetX; Y = (int)MouseManager.Y + dragOffsetY; }
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
+                if (isHoldingHandel)
+                { X = (int)MouseManager.X - dragOffsetX; Y = (int)MouseManager.Y - dragOffsetY; }
+
                 if (Kernel.MouseInArea(X, Y, X + Width, Y + Height + 32))
                 {
                     if (Kernel.MouseClick())
                         WindowManager.SetFocused(WID);
-
-                    isReadyToCache = false;
-                    isReadyToDrawCache = false;
 
                     if (Kernel.MouseInArea(X, Y, X + Width - 32, Y + 32) && MouseManager.MouseState == MouseState.Left && MouseManager.LastMouseState != MouseState.Left && !isHoldingHandel && WindowManager.FocusedWindow == WID)
                     { dragOffsetX = (int)MouseManager.X - X; dragOffsetY = (int)MouseManager.Y - Y; isHoldingHandel = true; }
@@ -200,27 +187,16 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 32, Y, X + Width, Y + 32) && Kernel.MouseClick())
                         Close();
                 }
-                else
-                {
-                    isReadyToCache = true;
-                }
-
-                if (isHoldingHandel)
-                { X = (int)MouseManager.X - dragOffsetX; Y = (int)MouseManager.Y - dragOffsetY; }
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
+                if (isHoldingHandel)
+                { X = (int)MouseManager.X - dragOffsetX; Y = (int)MouseManager.Y - dragOffsetY; }
+
                 if (Kernel.MouseInArea(X, Y, X + Width, Y + Height))
                 {
                     if (Kernel.MouseClick())
                         WindowManager.SetFocused(WID);
-
-                    isReadyToCache = false;
-                    isReadyToDrawCache = false;
-                }
-                else
-                {
-                    isReadyToCache = true;
                 }
             }
 
@@ -256,17 +232,27 @@ namespace HontelOS.System.Graphics
         public void Maximize()
         {
             if (X == 0 && Y == 32 && Width == Kernel.screenWidth && Height == Kernel.screenHeight - 32)
-            { X = oldX; Y = oldY; Width = oldWidth; Height = oldHeight; }
+            { Resize(oldX, oldY, oldWidth, oldHeight); }
             else
             {
                 oldX = X; oldY = Y; oldWidth = Width; oldHeight = Height;
-                X = 0; Y = 32; Width = (int)Kernel.screenWidth; Height = (int)Kernel.screenHeight - 32;
+                Resize(0, 32, (int)Kernel.screenWidth, (int)Kernel.screenHeight - 32);
             }
             WindowManager.SetFocused(WID);
             IsDirty = true;
         }
 
         public void Minimize() => IsVisable = false;
+
+        public void Resize(int x, int y, int width, int height)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            canvas = new DirectBitmap(width, height);
+            IsDirty = true;
+        }
     }
 
     public enum WindowStyle
