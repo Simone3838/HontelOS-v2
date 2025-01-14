@@ -25,7 +25,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
-            c.DrawImageStretchAlpha(Image as Bitmap, new Rectangle(Window.ViewX + X, Window.ViewY + Y, (int)Image.Width, (int)Image.Height), new Rectangle(Window.ViewX + X, Window.ViewY + Y, Width, Height));
+            c.DrawImage(Image, X, Y, Width, Height);
         }
     }
 }

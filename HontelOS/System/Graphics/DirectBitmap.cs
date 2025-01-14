@@ -352,7 +352,7 @@ namespace HontelOS.System.Graphics
             y2 = (int)num4;
         }
 
-        public void DrawImage(Bitmap image, int x, int y)
+        public void DrawImage(Image image, int x, int y)
         {
             for (int yi = 0; yi < image.Height; yi++)
             {
@@ -362,6 +362,44 @@ namespace HontelOS.System.Graphics
 
                 MemoryOperations.Copy(Bitmap.RawData, destOffset, image.RawData, srcOffset, count);
             }
+        }
+
+        public void DrawImage(Image image, int x, int y, int w, int h)
+        {
+            Color color;
+
+            int[] pixels = ScaleImage(image, w, h);
+            var maxWidth = Math.Min(w, Width - x);
+            var maxHeight = Math.Min(h, Height - y);
+            for (int xi = 0; xi < maxWidth; xi++)
+            {
+                for (int yi = 0; yi < maxHeight; yi++)
+                {
+                    color = Color.FromArgb(pixels[xi + (yi * w)]);
+                    SetPixelAlpha(x + xi, y + yi, color);
+                }
+            }
+        }
+
+        int[] ScaleImage(Image image, int newWidth, int newHeight)
+        {
+            int[] pixels = image.RawData;
+            int w1 = (int)image.Width;
+            int h1 = (int)image.Height;
+            int[] temp = new int[newWidth * newHeight];
+            int xRatio = (int)((w1 << 16) / newWidth) + 1;
+            int yRatio = (int)((h1 << 16) / newHeight) + 1;
+            int x2, y2;
+            for (int i = 0; i < newHeight; i++)
+            {
+                for (int j = 0; j < newWidth; j++)
+                {
+                    x2 = (j * xRatio) >> 16;
+                    y2 = (i * yRatio) >> 16;
+                    temp[(i * newWidth) + j] = pixels[(y2 * w1) + x2];
+                }
+            }
+            return temp;
         }
 
         public Bitmap ExtractImage(int srcX, int srcY, int width, int height)
@@ -424,7 +462,7 @@ namespace HontelOS.System.Graphics
             DrawImage(tmp, x, y);
         }
 
-        public void DrawImageStretchAlpha(Bitmap image, Rectangle sourceRect, Rectangle destRect)
+        public void DrawImageStretchAlpha(Image image, Rectangle sourceRect, Rectangle destRect)
         {
             float scaleX = (float)sourceRect.Width / destRect.Width;
             float scaleY = (float)sourceRect.Height / destRect.Height;

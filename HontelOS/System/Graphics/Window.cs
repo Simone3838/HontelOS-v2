@@ -51,8 +51,6 @@ namespace HontelOS.System.Graphics
 
         bool isHoldingHandel = false;
 
-        Bitmap cachedViewArea = null;
-
         int oldX;
         int oldY;
         int oldWidth;
@@ -232,7 +230,7 @@ namespace HontelOS.System.Graphics
         public void Maximize()
         {
             if (X == 0 && Y == 32 && Width == Kernel.screenWidth && Height == Kernel.screenHeight - 32)
-            { Resize(oldX, oldY, oldWidth, oldHeight); }
+                Resize(oldX, oldY, oldWidth, oldHeight);
             else
             {
                 oldX = X; oldY = Y; oldWidth = Width; oldHeight = Height;
