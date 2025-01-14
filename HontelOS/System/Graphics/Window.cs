@@ -78,10 +78,11 @@ namespace HontelOS.System.Graphics
             if (!IsVisable)
                 return;
 
-            c.DrawRoundedRectangle(Color.Black, X - 1, Y - 1, Width + 2, Height + 34, 10);
+            c.DrawRoundedRectangle(Color.Black, X - 1, Y - 1, Width + 1, 33, 10);
 
             if (WindowStyle == WindowStyle.Normal)
             {
+                c.DrawRectangle(Color.Black, X - 1, Y + 16, Width + 1, Height + 16);
                 c.DrawFilledTopRoundedRectangle(Style.Window_HandleColor, X, Y, Width, 32, 10);//handel
 
                 if (Icon != null)
@@ -104,6 +105,7 @@ namespace HontelOS.System.Graphics
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
+                c.DrawRectangle(Color.Black, X - 1, Y + 16, Width + 1, Height + 16);
                 c.DrawFilledTopRoundedRectangle(Style.Window_HandleColor, X, Y, Width, 32, 10);//handel
 
                 if (Icon != null)
@@ -120,7 +122,7 @@ namespace HontelOS.System.Graphics
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
-                
+                c.DrawRectangle(Color.Black, X - 1, Y - 1, Width + 1, Height + 1);
             }
 
             if (!IsDirty)
@@ -168,6 +170,8 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 96, Y, X + Width - 64, Y + 32) && Kernel.MouseClick())
                         Minimize();
                 }
+
+                ViewX = X; ViewY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
@@ -185,6 +189,8 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 32, Y, X + Width, Y + 32) && Kernel.MouseClick())
                         Close();
                 }
+
+                ViewX = X; ViewY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
@@ -196,12 +202,12 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseClick())
                         WindowManager.SetFocused(WID);
                 }
+
+                ViewX = X; ViewY = Y;
             }
 
             if (Y < 32)
-                Y = 32; 
-
-            ViewX = X; ViewY = Y + 32;
+                Y = 32;
 
             if (MouseManager.MouseState != MouseState.Left && isHoldingHandel)
                 isHoldingHandel = false;
