@@ -56,24 +56,28 @@ namespace HontelOS.System
             items = WindowManager.Windows.Count + 1;
             dockWidth = items * 74 + 10;
             int posX = (int)Kernel.screenWidth / 2 - dockWidth / 2;
-            int posY = (int)Kernel.screenHeight - 84;
+            int posY = (int)Kernel.screenHeight - 94;
 
             launchPadToolTip.Hide();
 
             foreach (var tt in windowTooltips.Values)
                 tt.Hide();
 
-            if (Kernel.MouseInArea(posX + 10, posY + 10, posX + 64, posY + 64))
+            if (Kernel.MouseInArea(posX + 10, posY + 10, posX + 10 + 64, posY + 10 + 64))
             {
                 launchPadToolTip.Show();
 
-                if(Kernel.MouseClick())
+                if (Kernel.MouseClick())
                     Kernel.appListVisable = !Kernel.appListVisable;
             }
-                
+
             for (int i = 0; i < WindowManager.Windows.Count; i++)
             {
-                if (Kernel.MouseInArea(posX + 84 + i * 74, posY + 10, posX + 84 + i * 74 + 64, posY + 64))
+                // Adjusted collision box for each window icon
+                int iconPosX = posX + 84 + i * 74;
+                int iconPosY = posY + 10;
+
+                if (Kernel.MouseInArea(iconPosX, iconPosY, iconPosX + 64, iconPosY + 64))
                 {
                     windowTooltips[WindowManager.Windows.Keys.ToList()[i]].Show();
 
@@ -91,7 +95,7 @@ namespace HontelOS.System
             items = WindowManager.Windows.Count + 1;
             dockWidth = items * 74 + 10;
             int posX = (int)Kernel.screenWidth / 2 - dockWidth / 2;
-            int posY = (int)Kernel.screenHeight - 84;
+            int posY = (int)Kernel.screenHeight - 104;
 
             windowTooltips.Clear();
 
