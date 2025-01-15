@@ -7,7 +7,7 @@
 </p>
 
 # HontelOS
- An Operating System made in C# with Cosmos.
+ An Operating System made in C# with Cosmos Developed by Jort van Dalen.
 # Features
 - PS/2 Keyboard and Mouse
 - GUI (VBE, SVGAII)
