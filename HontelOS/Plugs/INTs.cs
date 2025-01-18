@@ -2,6 +2,7 @@
 * PROJECT:          HontelOS
 * CONTENT:          CPU Exceptions.
 * PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
+* MODIFIED BY:      Jort van Dalen
 */
 
 using IL2CPU.API.Attribs;

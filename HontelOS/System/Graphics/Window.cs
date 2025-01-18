@@ -14,31 +14,31 @@ using System.Drawing;
 
 namespace HontelOS.System.Graphics
 {
-    public class Window
+    public class Window : IWindow
     {
         Canvas c = Kernel.canvas;
         public DirectBitmap canvas;
         public Style Style = Kernel.style;
 
-        public string Title;
-        public Image Icon;
+        public string Title { get; set; }
+        public Image Icon { get; set; }
         public WindowStyle WindowStyle;
-        public int WID;
+        public int WID { get; set; }
 
-        public int X;
-        public int Y;
-        public int Width;
-        public int Height;
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public int ViewX;
         public int ViewY;
         public int ViewXUpd;
         public int ViewYUpd;
 
-        public bool IsVisable = true;
-        public bool CanClose = true;
+        public bool IsVisable { get; set; } = true;
+        public bool CanClose { get; set; } = true;
 
-        public bool IsDirty = true;
+        public bool IsDirty { get; set; } = true;
 
         public bool DisableMaximizeButton = false;
         public bool DisableMinimizeButton = false;

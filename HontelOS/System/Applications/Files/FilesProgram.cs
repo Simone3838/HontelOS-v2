@@ -48,6 +48,35 @@ namespace HontelOS.System.Applications.Files
 
             WindowManager.Register(this);
         }
+        public FilesProgram(string path) : base("Files", WindowStyle.Normal, (int)Kernel.screenWidth / 2 - 450, (int)Kernel.screenHeight / 2 - 300, 900, 600)
+        {
+            if(Directory.Exists(path))
+                workingDirectory = path;
+
+            string[] _items = { "File", "Folder" };
+            Action<int>[] _actions =
+            {
+                index => CreateFile(),
+                index => CreateFolder()
+            };
+            new ContextMenuButton("Create", _items, _actions, 5, 5, 100, 25, this);
+
+            new Button("Delete", new Action(Delete), 110, 5, 100, 25, this);
+
+            for (int i = 0; i < Kernel.fileSystem.GetVolumes().Count; i++)
+            {
+                string volumePath = Kernel.fileSystem.GetVolumes()[i].mFullPath;
+                new Button(volumePath, () => GoToPath(volumePath), 5, 35 + i * 30, 100, 25, this);
+            }
+
+            pathTextBox = new TextBox("path to file/folder...", new Action<string>(GoToPath), 110, 35, 785, 25, this);
+            pathTextBox.Text = workingDirectory.Replace("\\", "/");
+
+            itemsList = new ItemsList(new List<string> { "" }, 110, 65, 785, 530, this);
+            itemsList.OnSubmit.Add(GoToPathFromItemsList);
+
+            WindowManager.Register(this);
+        }
 
         void CreateFile()
         {

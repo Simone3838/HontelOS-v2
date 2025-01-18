@@ -2,6 +2,7 @@
 * PROJECT:          HontelOS
 * CONTENT:          Direct bitmap plugs (used for compositing)
 * PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
+* MODIFIED BY:      Jort van Dalen
 *                   https://github.com/sswroom/SClass
 */
 

@@ -1,7 +1,8 @@
 ﻿/*
 * PROJECT:          HontelOS
 * CONTENT:          Direct bitmap (used for compositing)
-* PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>, Jort van Dalen
+* PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
+* MODIFIED BY:      Jort van Dalen
 */
 
 using System;

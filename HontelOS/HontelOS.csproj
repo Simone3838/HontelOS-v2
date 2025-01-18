@@ -30,7 +30,7 @@
 		<Month>$([System.DateTime]::Now.ToString("MM"))</Month>
 		<Date>$([System.DateTime]::Now.ToString("dd"))</Date>
 		<Time>$([System.DateTime]::Now.ToString("HHmm"))</Time>
-		<Version>0.0.1</Version>
+		<Version>0.1.0</Version>
 		<VersionDesc>This is a test version.</VersionDesc>
 		<SomeThing>
 namespace HontelOS.System

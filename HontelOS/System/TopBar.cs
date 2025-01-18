@@ -9,6 +9,7 @@ using System;
 using HontelOS.Resources;
 using HontelOS.System.Applications.About;
 using HontelOS.System.Applications.Files;
+using HontelOS.System.Applications.Terminal;
 using System.Drawing;
 using Cosmos.HAL;
 using HontelOS.System.Graphics;
@@ -38,11 +39,12 @@ namespace HontelOS.System
             {
                 if (Kernel.MouseInArea(0, 0, 32, 32) && Kernel.MouseClick())
                 {
-                    string[] _items = { "Files", "About", "Restart", "Shutdown" };
+                    string[] _items = { "Files", "About", "Terminal", "Restart", "Shutdown" };
                     Action<int>[] _actions =
                     {
                     index => new FilesProgram(),
                     index => new AboutProgram(),
+                    index => new TerminalProgram(),
                     index => Kernel.Reboot(),
                     index => Kernel.Shutdown(),
                     };

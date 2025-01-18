@@ -1,0 +1,207 @@
+﻿using HontelOS.System.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using Cosmos.System;
+using HontelOS.System.Applications.Files;
+
+namespace HontelOS.System.Applications.Terminal
+{
+    public class TerminalProgram : ConsoleWindow
+    {
+
+        public string WorkingDirectory = "0:\\";
+
+        public TerminalProgram() : base("Terminal", (int)Kernel.screenWidth / 2 - 450, (int)Kernel.screenHeight / 2 - 300, 900, 600)
+        {
+            WindowManager.Register(this);
+
+            console.WriteLine($"HontelOS {VersionInfo.Version} ({VersionInfo.VersionNumber})");
+            console.WriteLine("Copyright (c) 2025 Jort van Dalen. All rights reserved.");
+            console.WriteLine();
+            console.Write(WorkingDirectory + "> ");
+            console.ReadLine();
+            console.OnSubmitReadLine.Add((string input) =>
+            {
+                ExecuteCommand(input);
+                console.Write(WorkingDirectory + "> ");
+                console.ReadLine();
+            });
+        }
+
+        public void ExecuteCommand(string fullCommand)
+        {
+            string command = fullCommand.Split(' ')[0].ToLower();
+            string[] args = RestoreArgs(fullCommand.Split(' ').Skip(1).ToArray());
+
+            if(args.Length == 0)
+                args = new string[] { null };
+
+            switch (command)
+            {
+                case "shutdown":
+                    Kernel.Shutdown();
+                    break;
+                case "reboot":
+                    Kernel.Reboot();
+                    break;
+                case "msgbox":
+                    MSGBOX(args);
+                    break;
+                case "ls":
+                    LS();
+                    break;
+                case "showdir":
+                    SHOWDIR(args[0]);
+                    break;
+                case "rm":
+                    RM(args[0]);
+                    break;
+                case "create":
+                    CREATE(args[0]);
+                    break;
+                case "createdir":
+                    CREATEDIR(args[0]);
+                    break;
+                case "rmdir":
+                    RMDIR(args[0]);
+                    break;
+                case "cd":
+                    CD(args[0]);
+                    break;
+                case "exit":
+                    Close();
+                    break;
+                default:
+                    console.WriteLine($"Command '{command}' not found.");
+                    break;
+            }
+        }
+
+        public string[] RestoreArgs(string[] args)
+        {
+            List<string> newArgs = new List<string>();
+            bool stringStarted = false;
+            StringBuilder currentString = new StringBuilder();
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].StartsWith('"') && !stringStarted)
+                {
+                    stringStarted = true;
+                    currentString.Append(args[i].TrimStart('"'));
+                }
+                else if (args[i].EndsWith('"') && stringStarted)
+                {
+                    stringStarted = false;
+                    currentString.Append(" ").Append(args[i].TrimEnd('"'));
+                    newArgs.Add(currentString.ToString());
+                    currentString.Clear();
+                }
+                else if (stringStarted)
+                    currentString.Append(" ").Append(args[i]);
+                else
+                    newArgs.Add(args[i]);
+            }
+
+            if (stringStarted)
+                newArgs.Add(currentString.ToString());
+
+            return newArgs.ToArray();
+        }
+
+        public void CD(string path)
+        {
+            if(File.Exists(path))
+            {
+                console.WriteLine("Can not move into a file.");
+            }
+            else if (path == "..")
+            {
+                if (WorkingDirectory != "0:\\")
+                {
+                    WorkingDirectory = WorkingDirectory.Substring(0, WorkingDirectory.LastIndexOf("\\"));
+                    if (WorkingDirectory == "0:")
+                        WorkingDirectory += "\\";
+                }
+            }
+            else
+            {
+                if (Directory.Exists(Path.Combine(WorkingDirectory, path)))
+                    WorkingDirectory = Path.Combine(WorkingDirectory, path);
+                else if (Directory.Exists(path))
+                    WorkingDirectory = path;
+                else
+                    console.WriteLine("Directory not found.");
+            }
+        }
+
+        public void RM(string path)
+        {
+            if (File.Exists(Path.Combine(WorkingDirectory, path)))
+                File.Delete(Path.Combine(WorkingDirectory, path));
+            else if (File.Exists(path))
+                File.Delete(path);
+            else
+                console.WriteLine("File not found.");
+        }
+
+        public void RMDIR(string path)
+        {
+            if (path == null)
+            {
+                Directory.Delete(WorkingDirectory);
+                CD("..");
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path);
+                CD("..");
+            }
+            else
+                console.WriteLine("Directory not found.");
+        }
+
+        public void SHOWDIR(string path)
+        {
+            if (path == null)
+                new FilesProgram(WorkingDirectory);
+            else if (Directory.Exists(path))
+                new FilesProgram(path);
+            else
+                console.WriteLine("Directory not found.");
+        }
+
+        public void LS()
+        {
+            foreach (string dir in Directory.GetDirectories(WorkingDirectory))
+                console.WriteLine(dir);
+            foreach (string file in Directory.GetFiles(WorkingDirectory))
+                console.WriteLine(file);
+        }
+
+        public void MSGBOX(string[] args)
+        {
+            if(args.Length < 3)
+            {
+                console.WriteLine("Usage: msgbox <title> <message> <buttons (0 - 7)>");
+                return;
+            }
+
+            new MessageBox(args[0], args[1], null, (MessageBoxButtons)int.Parse(args[2]));
+        }
+
+        public void CREATE(string filename)
+        {
+            var str = File.Create(Path.Combine(WorkingDirectory, filename));
+            str.Dispose();
+        }
+
+        public void CREATEDIR(string dirname)
+        {
+            Directory.CreateDirectory(Path.Combine(WorkingDirectory, dirname));
+        }
+    }
+}

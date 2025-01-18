@@ -12,14 +12,14 @@ namespace HontelOS.System.Graphics
 {
     public class WindowManager
     {
-        public static Dictionary<int, Window> Windows = new Dictionary<int, Window>();
+        public static Dictionary<int, IWindow> Windows = new Dictionary<int, IWindow>();
         public static int? FocusedWindow { get; private set; }
 
         public static List<Action> OnWindowsListUpdate = new();
 
         static int WIDcounter = -1;
 
-        public static int Register(Window window)
+        public static int Register(IWindow window)
         {
             WIDcounter++;
             window.WID = WIDcounter;
@@ -41,7 +41,7 @@ namespace HontelOS.System.Graphics
 
         public static void Update()
         {
-            foreach (Window w in Windows.Values)
+            foreach (IWindow w in Windows.Values)
                 w.UpdateWindow();
         }
 
