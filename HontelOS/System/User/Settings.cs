@@ -11,6 +11,8 @@ namespace HontelOS.System.User
 {
     public class Settings
     {
+        public static string path = "0:\\HontelOS\\settings.ini";
+        public static string directory = "0:\\HontelOS";
 
         static Dictionary<string, string> settingsDic = new Dictionary<string, string>();
 
@@ -21,13 +23,13 @@ namespace HontelOS.System.User
 
         public static void Reset()
         {
-            File.WriteAllLines("0:\\HontelOS\\settings.ini", Default);
+            if(!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            File.WriteAllLines(path, Default);
         }
 
         public static void Load()
         {
-            string path = "0:\\HontelOS\\settings.ini";
-            string directory = Path.GetDirectoryName(path);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
             if (!File.Exists(path))
