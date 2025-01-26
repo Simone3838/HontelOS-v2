@@ -1,6 +1,6 @@
 ﻿/*
 * PROJECT:          HontelOS
-* CONTENT:          Control window
+* CONTENT:          Drawable window
 * PROGRAMMERS:      Jort van Dalen
 */
 
@@ -13,7 +13,7 @@ using System.Drawing;
 
 namespace HontelOS.System.Graphics
 {
-    public class Window : IWindow
+    public class DrawableWindow : IWindow
     {
         Canvas c = Kernel.canvas;
         public DirectBitmap canvas;
@@ -29,11 +29,6 @@ namespace HontelOS.System.Graphics
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public int ViewX;
-        public int ViewY;
-        public int ViewXUpd;
-        public int ViewYUpd;
-
         public bool IsVisable { get; set; } = true;
         public bool CanClose { get; set; } = true;
 
@@ -42,11 +37,7 @@ namespace HontelOS.System.Graphics
         public bool DisableMaximizeButton = false;
         public bool DisableMinimizeButton = false;
 
-        public List<Control> Controls = new List<Control>();
-
         public List<Action> OnClose = new();
-
-        public Color BackgroundColor;
 
         bool isHoldingHandel = false;
 
@@ -58,7 +49,7 @@ namespace HontelOS.System.Graphics
         int dragOffsetX;
         int dragOffsetY;
 
-        public Window(string title, WindowStyle windowStyle, int x, int y, int width, int height)
+        public DrawableWindow(string title, WindowStyle windowStyle, int x, int y, int width, int height)
         {
             Title = title;
             WindowStyle = windowStyle;
@@ -67,9 +58,11 @@ namespace HontelOS.System.Graphics
             Width = width;
             Height = height;
             canvas = new DirectBitmap(width, height);
-            BackgroundColor = Style.Window_BackgroundColor;
+            canvas.Clear(Color.Black);
         }
 
+
+        public virtual void Draw(DirectBitmap canvas) { return; }
         public virtual void CustomUpdate() { return; }
 
         public void DrawWindow()
@@ -124,25 +117,8 @@ namespace HontelOS.System.Graphics
                 c.DrawRectangle(Color.Black, X - 1, Y - 1, Width + 1, Height + 1);
             }
 
-            if (!IsDirty)
-            {
-                if (WindowStyle != WindowStyle.Borderless)
-                    c.DrawImage(canvas.Bitmap, X, Y + 32, true);
-                else
-                    c.DrawImage(canvas.Bitmap, X, Y, true);
-
-                return;
-            }
-
-            canvas.Clear(BackgroundColor);
-
-            foreach (Control c in Controls)
-                c.Draw();
-
-            if (WindowStyle != WindowStyle.Borderless)
-                c.DrawImage(canvas.Bitmap, X, Y + 32, true);
-            else
-                c.DrawImage(canvas.Bitmap, X, Y, true);
+            if (IsDirty)
+                Draw(canvas);
 
             IsDirty = false;
         }
@@ -169,8 +145,6 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 96, Y, X + Width - 64, Y + 32) && Kernel.MouseClick())
                         Minimize();
                 }
-
-                ViewX = X; ViewY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
@@ -188,8 +162,6 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseInArea(X + Width - 32, Y, X + Width, Y + 32) && Kernel.MouseClick())
                         Close();
                 }
-
-                ViewX = X; ViewY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
@@ -201,8 +173,6 @@ namespace HontelOS.System.Graphics
                     if (Kernel.MouseClick())
                         WindowManager.SetFocused(WID);
                 }
-
-                ViewX = X; ViewY = Y;
             }
 
             if (Y < 32)
@@ -210,9 +180,6 @@ namespace HontelOS.System.Graphics
 
             if (MouseManager.MouseState != MouseState.Left && isHoldingHandel)
                 isHoldingHandel = false;
-
-            foreach (Control c in Controls)
-                c.Update();
 
             CustomUpdate();
         }
@@ -256,21 +223,5 @@ namespace HontelOS.System.Graphics
             canvas = new DirectBitmap(width, height);
             IsDirty = true;
         }
-    }
-
-    public enum WindowStyle
-    {
-        /// <summary>
-        /// A window with a handel and view area with the minimize, maximize and close buttons
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// The same as normal but only with the close button
-        /// </summary>
-        Dialog,
-        /// <summary>
-        /// A window only with a view area
-        /// </summary>
-        Borderless
     }
 }

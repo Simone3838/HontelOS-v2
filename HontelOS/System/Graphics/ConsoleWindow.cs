@@ -4,7 +4,6 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
-using Cosmos.Core;
 using Cosmos.System;
 using Cosmos.System.Graphics;
 using Cosmos.System.Graphics.Fonts;
@@ -107,7 +106,7 @@ namespace HontelOS.System.Graphics
             if (isHoldingHandel)
             { X = (int)MouseManager.X + dragOffsetX; Y = (int)MouseManager.Y + dragOffsetY; }
 
-            if (Kernel.MouseInArea(X, Y, X + Width, Y + Height + 32))
+            if (Kernel.MouseInArea(X, Y, X + Width, Y + Height + 32) && IsVisable)
             {
                 if (Kernel.MouseClick())
                     WindowManager.SetFocused(WID);
