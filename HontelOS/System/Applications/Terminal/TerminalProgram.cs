@@ -53,6 +53,9 @@ namespace HontelOS.System.Applications.Terminal
                 case "ls":
                     LS();
                     break;
+                case "lspci":
+                    LSPCI();
+                    break;
                 case "showdir":
                     SHOWDIR(args[0]);
                     break;
@@ -77,6 +80,15 @@ namespace HontelOS.System.Applications.Terminal
                 default:
                     console.WriteLine($"Command '{command}' not found.");
                     break;
+            }
+        }
+
+        public void LSPCI()
+        {
+            console.WriteLine("PCI devices:");
+            foreach (var device in Cosmos.HAL.PCI.Devices)
+            {
+                console.WriteLine($"Vendor: {device.VendorID:X4} Device: {device.DeviceID:X4} Class: {device.ClassCode:X2} Subclass: {device.Subclass:X2} ProgIF: {device.ProgIF:X2}");
             }
         }
 

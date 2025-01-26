@@ -22,6 +22,10 @@ using HontelOS.System.Graphics;
 using HontelOS.System.User;
 using HontelOS.System.Processing;
 using HontelOS.System.Input;
+using Cosmos.HAL.Drivers.Audio;
+using Cosmos.System.Audio;
+using HontelOS.Drivers.Audio;
+using Cosmos.HAL.Audio;
 
 namespace HontelOS
 {
@@ -32,6 +36,10 @@ namespace HontelOS
         Dock dock;
         TopBar topBar;
         public static CosmosVFS fileSystem;
+
+        public static AudioDriver audioDriver;
+        public static AudioMixer audioMixer;
+        public static AudioManager audioManager;
 
         public static Cursor cursor = Cursor.Default;
 
@@ -69,16 +77,30 @@ namespace HontelOS
                 Settings.Reset();
                 Settings.Load();
 
+                audioMixer = new AudioMixer();
+                audioDriver = AudioDriverExt.GetAudioDriver();
+                if (audioDriver != null)
+                {
+                    audioDriver.SetSampleFormat(new SampleFormat(AudioBitDepth.Bits16, 2, true));
+                    audioManager = new AudioManager()
+                    {
+                        Stream = audioMixer,
+                        Output = audioDriver
+                    };
+                    audioManager.Enable();
+                }
+
                 string[] resFromSettings = Settings.Get("Resolution").Split('x');
 
                 screenWidth = uint.Parse(resFromSettings[0]);
                 screenHeight = uint.Parse(resFromSettings[1]);
                 canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode(screenWidth, screenHeight, ColorDepth.ColorDepth32));
 
-
                 // Boot progress image
-                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 8, (int)screenHeight / 2 - (int)screenHeight/ 8, (int)screenHeight / 4, (int)screenHeight / 4);
+                canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 8, (int)screenHeight / 2 - (int)screenHeight / 8, (int)screenHeight / 4, (int)screenHeight / 4);
                 canvas.Display();
+
+                audioMixer.Streams.Add(ResourceManager.BootSound);
 
                 MouseManager.ScreenWidth = screenWidth;
                 MouseManager.ScreenHeight = screenHeight;
@@ -88,8 +110,8 @@ namespace HontelOS
                 dock = new Dock();
                 topBar = new TopBar();
 
-                if (VMTools.IsVMWare)
-                    new MessageBox("Audio", "VMWare does not support the audio driver for the COSMOS kernel!", null, MessageBoxButtons.Ok);
+                if (audioDriver == null)
+                    new MessageBox("Audio", "There were no compatible sound cards found on your system!", null, MessageBoxButtons.Ok);
 
                 new PasswordWindow();
 
