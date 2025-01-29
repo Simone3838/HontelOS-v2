@@ -69,7 +69,7 @@ namespace HontelOS
         {
             try
             {
-                style = new Style();
+                style = new LightStyle();
 
                 fileSystem = new CosmosVFS();
                 VFSManager.RegisterVFS(fileSystem);
@@ -77,6 +77,7 @@ namespace HontelOS
                 Settings.Reset();
                 Settings.Load();
 
+                // I don't know how to use the Cosmos Audio interface this correctly, i'll look into it later
                 audioMixer = new AudioMixer();
                 audioDriver = AudioDriverExt.GetAudioDriver();
                 if (audioDriver != null)
@@ -90,10 +91,14 @@ namespace HontelOS
                     audioManager.Enable();
                 }
 
-                string[] resFromSettings = Settings.Get("Resolution").Split('x');
-
-                screenWidth = uint.Parse(resFromSettings[0]);
-                screenHeight = uint.Parse(resFromSettings[1]);
+                string resFromSettings = Settings.Get("Resolution");
+                if (resFromSettings != null)
+                {
+                    string[] splitResFromSettings = resFromSettings.Split('x');
+                    screenWidth = uint.Parse(splitResFromSettings[0]);
+                    screenHeight = uint.Parse(splitResFromSettings[1]);
+                }
+                
                 canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode(screenWidth, screenHeight, ColorDepth.ColorDepth32));
 
                 // Boot progress image
@@ -217,6 +222,7 @@ namespace HontelOS
         void UpdateSystem()
         {
             mouseClickNotice1 = false;
+            mouseClickSecNotice1 = false;
             KeyboardManagerExt.Update();
 
             if (!appListVisable)

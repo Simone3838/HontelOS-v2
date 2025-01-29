@@ -58,10 +58,10 @@ namespace HontelOS.System.Graphics.Controls
                     if (SelectedIndex == i)
                     {
                         c.DrawFilledRoundedRectangle(Style.ItemsList_SelectedColor, X, Y + i * itemHeight, Width, itemHeight, 5);
-                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.White, X + 2, Y + i * itemHeight);
+                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Style.ItemsList_SelectedTextColor, X + 2, Y + i * itemHeight);
                     }
                     else
-                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Color.Black, X + 2, Y + i * itemHeight);
+                        c.DrawString(Items[itemIndex], PCScreenFont.Default, Style.ItemsList_TextColor, X + 2, Y + i * itemHeight);
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace HontelOS.System.Graphics.Controls
             else
                 c.DrawFilledRoundedRectangle(Style.Button_NormalColor, X, Y, Width, Height, 5);
 
-            c.DrawString(Text, Style.SystemFont, Color.White, X + Width / 2 - Style.SystemFont.Width * Text.Length / 2, Y + Height / 2 - Style.SystemFont.Height / 2);
+            c.DrawString(Text, Style.SystemFont, Style.Button_TextColor, X + Width / 2 - Style.SystemFont.Width * Text.Length / 2, Y + Height / 2 - Style.SystemFont.Height / 2);
         }
     }
 }

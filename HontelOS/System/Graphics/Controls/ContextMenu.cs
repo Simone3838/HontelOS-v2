@@ -39,7 +39,10 @@ namespace HontelOS.System.Graphics.Controls
             c.DrawFilledRoundedRectangle(Style.ContextMenu_BackgroundColor, x, y, width, items.Length * 18, 5);
             for (int i = 0; i < items.Length; i++)
             {
-                c.DrawString(items[i], PCScreenFont.Default, Color.Black, x + 2, y + i * 18);
+                if (Kernel.MouseInArea(x, y + i * 18, x + width, y + 18 + i * 18))
+                    c.DrawFilledRectangle(Style.ContextMenu_HoverColor, x, y + i * 18, width, 16);
+
+                c.DrawString(items[i], PCScreenFont.Default, Style.ContextMenu_TextColor, x + 2, y + i * 18);
             }
         }
 
@@ -51,9 +54,7 @@ namespace HontelOS.System.Graphics.Controls
                 {
                     if (Kernel.MouseInArea(x, y + i * 16, x + width, y + 16 + i * 18))
                     {
-                        c.DrawFilledRectangle(Style.ContextMenu_HoverColor, x, y + i * 16, 150, 16);
-
-                        if(Kernel.MouseClick())
+                        if (Kernel.MouseClick())
                         {
                             actions[i]?.Invoke(i);
                             Kernel.systemControls.Remove(this);

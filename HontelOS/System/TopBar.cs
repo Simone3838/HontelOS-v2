@@ -30,7 +30,7 @@ namespace HontelOS.System
             c.DrawImage(logo, 4, 4, 12, 24);
 
             string time = $"{RTC.Hour.ToString("00")}:{RTC.Minute.ToString("00")}";
-            c.DrawString(time, Style.SystemFont, Color.Black, (int)Kernel.screenWidth - time.Length * Style.SystemFont.Width - 5, 16 - Style.SystemFont.Height / 2);
+            c.DrawString(time, Style.SystemFont, Style.DefaultTextColor, (int)Kernel.screenWidth - time.Length * Style.SystemFont.Width - 5, 16 - Style.SystemFont.Height / 2);
         }
 
         public void Update()

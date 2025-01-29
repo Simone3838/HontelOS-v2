@@ -18,8 +18,14 @@ namespace HontelOS.System.Graphics.Controls
         public Label(string text, Font font, Color color, int x, int y, Window window) : base(window)
         {
             Text = text;
-            Color = color;
-            Font = font;
+            if(color != Color.Empty)
+                Color = color;
+            else
+                Color = Style.Label_TextColor;
+            if(font != null)
+                Font = font;
+            else
+                Font = Style.SystemFont;
 
             X = x;
             Y = y;

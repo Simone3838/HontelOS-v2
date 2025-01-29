@@ -40,9 +40,9 @@ namespace HontelOS.System.Graphics.Controls
                 c.DrawFilledRoundedRectangle(Style.TextBox_NormalColor, X, Y, Width, Height, 5);
 
             if (string.IsNullOrEmpty(Text))
-                c.DrawString(Placeholder, Style.SystemFont, Color.Gray, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
+                c.DrawString(Placeholder, Style.SystemFont, Style.TextBox_PlaceholderTextColor, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
             else
-                c.DrawString(Text, Style.SystemFont, Color.Black, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
+                c.DrawString(Text, Style.SystemFont, Style.TextBox_TextColor, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
         }
 
         public override void Update()

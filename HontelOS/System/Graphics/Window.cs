@@ -87,20 +87,20 @@ namespace HontelOS.System.Graphics
                 if (Icon != null)
                 {
                     c.DrawImage(Icon, X + 10, Y + 10, 16, 16, true);//icon
-                    c.DrawString(Title, PCScreenFont.Default, Color.Black, X + 32, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
+                    c.DrawString(Title, PCScreenFont.Default, Style.Window_HandleTextColor, X + 32, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
                 }
                 else
-                    c.DrawString(Title, PCScreenFont.Default, Color.Black, X + 10, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
+                    c.DrawString(Title, PCScreenFont.Default, Style.Window_HandleTextColor, X + 10, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
 
                 if (Kernel.MouseInArea(X + Width - 32, Y, X + Width, Y + 32))
                     c.DrawFilledRectangle(Color.Red, X + Width - 32, Y, 32, 32, true);//red glow
-                c.DrawString("X", PCScreenFont.Default, Color.Black, X + Width - 32 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//close
+                c.DrawString("X", PCScreenFont.Default, Style.Window_HandleTextColor, X + Width - 32 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//close
                 if (Kernel.MouseInArea(X + Width - 64, Y, X + Width - 32, Y + 32))
                     c.DrawFilledRectangle(Style.Window_HandleButtonGlowColor, X + Width - 64, Y, 32, 32, true);//gray glow
-                c.DrawString("+", PCScreenFont.Default, Color.Black, X + Width - 64 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//maximize
+                c.DrawString("+", PCScreenFont.Default, Style.Window_HandleTextColor, X + Width - 64 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//maximize
                 if (Kernel.MouseInArea(X + Width - 96, Y, X + Width - 64, Y + 32))
                     c.DrawFilledRectangle(Style.Window_HandleButtonGlowColor, X + Width - 96, Y, 32, 32, true);//gray glow
-                c.DrawString("-", PCScreenFont.Default, Color.Black, X + Width - 96 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//minimize
+                c.DrawString("-", PCScreenFont.Default, Style.Window_HandleTextColor, X + Width - 96 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//minimize
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
@@ -110,14 +110,14 @@ namespace HontelOS.System.Graphics
                 if (Icon != null)
                 {
                     c.DrawImage(Icon, X + 10, Y + 10, 16, 16, true);//icon
-                    c.DrawString(Title, PCScreenFont.Default, Color.Black, X + 32, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
+                    c.DrawString(Title, PCScreenFont.Default, Style.Window_HandleTextColor, X + 32, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
                 }
                 else
-                    c.DrawString(Title, PCScreenFont.Default, Color.Black, X + 10, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
+                    c.DrawString(Title, PCScreenFont.Default, Style.Window_HandleTextColor, X + 10, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//title
 
                 if (Kernel.MouseInArea(X + Width - 32, Y, X + Width, Y + 32))
                     c.DrawFilledRectangle(Color.Red, X + Width - 32, Y, 32, 32, true);//red glow
-                c.DrawString("X", PCScreenFont.Default, Color.Black, X + Width - 32 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//close
+                c.DrawString("X", PCScreenFont.Default, Style.Window_HandleTextColor, X + Width - 32 + 16 - PCScreenFont.Default.Width / 2, Y + 32 / 2 - PCScreenFont.Default.Height / 2);//close
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {

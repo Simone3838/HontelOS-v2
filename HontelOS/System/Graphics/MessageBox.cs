@@ -21,7 +21,7 @@ namespace HontelOS.System.Graphics
             this.onSubmit = onSubmit;
             OnClose.Add(onClose);
 
-            new Label(message, Style.SystemFont, Color.Black, 25, (Height - 45) / 2 - Style.SystemFont.Height / 2, this);
+            new Label(message, null, Color.Empty, 25, (Height - 45) / 2 - Style.SystemFont.Height / 2, this);
 
             WindowManager.Register(this);
 
