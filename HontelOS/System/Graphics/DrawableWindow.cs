@@ -17,7 +17,7 @@ namespace HontelOS.System.Graphics
     {
         Canvas c = Kernel.canvas;
         public DirectBitmap canvas;
-        public Style Style = Kernel.style;
+        public Style Style = StyleManager.Style;
 
         public string Title { get; set; }
         public Image Icon { get; set; }
@@ -59,6 +59,9 @@ namespace HontelOS.System.Graphics
             Height = height;
             canvas = new DirectBitmap(width, height);
             canvas.Clear(Color.Black);
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; IsDirty = true; });
+            SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; IsDirty = true; });
         }
 
 

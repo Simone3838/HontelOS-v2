@@ -1,29 +1,29 @@
 ﻿<Project InitialTargets="GenerateVersionInfo" Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <!--<RuntimeIdentifier>cosmos</RuntimeIdentifier>-->
-        <Platform>cosmos</Platform>
-        <SupportsX86Intrinsics>false</SupportsX86Intrinsics>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<!--<RuntimeIdentifier>cosmos</RuntimeIdentifier>-->
+		<Platform>cosmos</Platform>
+		<SupportsX86Intrinsics>false</SupportsX86Intrinsics>
 		<SelfContained>True</SelfContained>
-    </PropertyGroup>
+	</PropertyGroup>
 
-    <PropertyGroup>
-        <EnableGDB>False</EnableGDB>
+	<PropertyGroup>
+		<EnableGDB>False</EnableGDB>
 		<StartCosmosGDB>True</StartCosmosGDB>
-        <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
-        <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
-        <Launch>VMware</Launch>
-        <Profile>VMware</Profile>
-        <Description>Use VMware Player or Workstation to deploy and debug.</Description>
-        <PxeInterface>192.168.0.8</PxeInterface>
-        <StackCorruptionDetectionEnabled>True</StackCorruptionDetectionEnabled>
-        <StackCorruptionDetectionLevel>MethodFooters</StackCorruptionDetectionLevel>
+		<VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
+		<CosmosDebugPort>Serial: COM1</CosmosDebugPort>
+		<Launch>VMware</Launch>
+		<Profile>VMware</Profile>
+		<Description>Use VMware Player or Workstation to deploy and debug.</Description>
+		<PxeInterface>192.168.0.8</PxeInterface>
+		<StackCorruptionDetectionEnabled>True</StackCorruptionDetectionEnabled>
+		<StackCorruptionDetectionLevel>MethodFooters</StackCorruptionDetectionLevel>
 		<VMWareEdition>Player</VMWareEdition>
 		<DebugEnabled>False</DebugEnabled>
 		<RemoveBootDebugOutput>True</RemoveBootDebugOutput>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    </PropertyGroup>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<Year>$([System.DateTime]::Now.ToString("yyyy"))</Year>
@@ -32,7 +32,7 @@
 		<Time>$([System.DateTime]::Now.ToString("HHmm"))</Time>
 		<Version>0.1.0</Version>
 		<VersionDesc>This is a test version.</VersionDesc>
-		<SomeThing>
+		<VersionFileContent>
 namespace HontelOS.System
 {
     public class VersionInfo
@@ -42,11 +42,11 @@ namespace HontelOS.System
 		public static string VersionNumber = "$(Year)$(Month)$(Date)$(Time)"%3b
     }
 }
-		</SomeThing>
+		</VersionFileContent>
 	</PropertyGroup>
 
 	<Target Name="GenerateVersionInfo">
-		<WriteLinesToFile File="System/VersionInfo.cs" Lines="$(SomeThing)" Overwrite="true" />
+		<WriteLinesToFile File="System/VersionInfo.cs" Lines="$(VersionFileContent)" Overwrite="true" />
 	</Target>
 
     <ItemGroup>
@@ -60,21 +60,15 @@ namespace HontelOS.System
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20240722114813" NoWarn="NU1604">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-		<PackageReference Include="Cosmos.Plugs" Version="0-*" NoWarn="NU1604" />
-        <PackageReference Include="Cosmos.Common" Version="0.1.0-localbuild20240722114820" />
-        <PackageReference Include="Cosmos.Core" Version="0.1.0-localbuild20240722114820" />
-        <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20240722114820" NoWarn="NU1604" />
-        <PackageReference Include="Cosmos.HAL2" Version="0.1.0-localbuild20240722114820" />
-        <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20240722114820" />
+		<PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild*" NoWarn="NU1604" />
+		<PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild*" NoWarn="NU1604" />
+		<PackageReference Include="Cosmos.Plugs" Version="0.1.0-localbuild*" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild*" NoWarn="NU1604" />
         <PackageReference Include="CosmosHttp" Version="1.0.4" />
-        <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild20240722114820" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Console" Version="4.3.1" />
-        <PackageReference Include="XSharp" Version="10.0.0" />
+		
+		<PlugsReference Include="$(MSBuildProjectDirectory)\..\HontelOS.Plugs\bin\Debug\net6.0\HontelOS.Plugs.dll" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@
 */
 
 using Cosmos.System.Graphics.Fonts;
+using HontelOS.Resources;
 using System.Drawing;
 
 namespace HontelOS.System.Graphics.Controls
@@ -15,7 +16,7 @@ namespace HontelOS.System.Graphics.Controls
         public Color Color;
         public Font Font;
 
-        public Label(string text, Font font, Color color, int x, int y, Window window) : base(window)
+        public Label(string text, Font font, Color color, int x, int y, IControlContainer container) : base(container)
         {
             Text = text;
             if(color != Color.Empty)
@@ -29,11 +30,20 @@ namespace HontelOS.System.Graphics.Controls
 
             X = x;
             Y = y;
+
+            SystemEvents.OnStyleChanged.Add(() => {
+                if (Color == StyleManager.PreviousStyle.Label_TextColor)
+                    Color = StyleManager.Style.Label_TextColor;
+                if (Font == StyleManager.PreviousStyle.SystemFont)
+                    Font = StyleManager.Style.SystemFont;
+            });
         }
 
         public override void Draw()
         {
+            base.Draw();
             c.DrawString(Text, Font, Color, X, Y);
+            DoneDrawing();
         }
     }
 }

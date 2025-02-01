@@ -4,7 +4,6 @@
 * PROGRAMMERS:      Jort van Dalen
 */
 
-using System.Drawing;
 using Cosmos.System.Graphics;
 
 namespace HontelOS.System.Graphics.Controls
@@ -13,7 +12,7 @@ namespace HontelOS.System.Graphics.Controls
     {
         public Image Image;
 
-        public PictureBox(Image image, int x, int y, int width, int height, Window window) : base(window)
+        public PictureBox(Image image, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
             Image = image;
 
@@ -25,7 +24,9 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
+            base.Draw();
             c.DrawImage(Image, X, Y, Width, Height);
+            DoneDrawing();
         }
     }
 }

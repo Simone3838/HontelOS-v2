@@ -14,15 +14,22 @@ using System.Drawing;
 using Cosmos.HAL;
 using HontelOS.System.Graphics;
 using HontelOS.System.Graphics.Controls;
+using HontelOS.System.Applications.Settings;
 
 namespace HontelOS.System
 {
     public class TopBar
     {
         Canvas c = Kernel.canvas;
-        Style Style = Kernel.style;
+        Style Style = StyleManager.Style;
 
         Bitmap logo = ResourceManager.HontelLogo;
+
+        public TopBar()
+        {
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; });
+            SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; });
+        }
 
         public void Draw()
         {
@@ -39,11 +46,12 @@ namespace HontelOS.System
             {
                 if (Kernel.MouseInArea(0, 0, 32, 32) && Kernel.MouseClick())
                 {
-                    string[] _items = { "Files", "About", "Terminal", "Restart", "Shutdown" };
+                    string[] _items = { "Files", "About", "Settings", "Terminal", "Restart", "Shutdown" };
                     Action<int>[] _actions =
                     {
                     index => new FilesProgram(),
                     index => new AboutProgram(),
+                    index => new SettingsProgram(),
                     index => new TerminalProgram(),
                     index => Kernel.Reboot(),
                     index => Kernel.Shutdown(),

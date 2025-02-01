@@ -12,7 +12,7 @@ namespace HontelOS.System.Graphics.Controls
     {
         public DirectBitmap Canvas;
 
-        public CanvasDisplay(string text, Action onClick, int x, int y, int width, int height, Window window) : base(window)
+        public CanvasDisplay(string text, Action onClick, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
             Canvas = new DirectBitmap(width, height);
 
@@ -24,7 +24,9 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
+            base.Draw();
             c.DrawImage(Canvas.Bitmap, X, Y);
+            DoneDrawing();
         }
 
         public void SetSize(int width, int height)

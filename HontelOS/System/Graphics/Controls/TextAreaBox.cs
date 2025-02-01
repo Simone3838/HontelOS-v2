@@ -21,7 +21,7 @@ namespace HontelOS.System.Graphics.Controls
         private int currentLine = 0;
         private int currentPosition = 0;
 
-        public TextAreaBox(string placeholder, int x, int y, int width, int height, Window window) : base(window)
+        public TextAreaBox(string placeholder, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
             Placeholder = placeholder;
 
@@ -34,6 +34,8 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
+            base.Draw();
+
             if (IsDisabled)
                 c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, X, Y, Width, Height, 5);
             else if (IsHovering)
@@ -56,6 +58,8 @@ namespace HontelOS.System.Graphics.Controls
             int linX = X + Style.SystemFont.Width * currentPosition;
             int linY = Y + Style.SystemFont.Height * currentLine;
             c.DrawLine(Color.Black, linX, linY, linX, linY + Style.SystemFont.Height);
+
+            DoneDrawing();
         }
 
         public override void Update()
@@ -113,7 +117,7 @@ namespace HontelOS.System.Graphics.Controls
                     currentPosition++;
                 }
 
-                Window.IsDirty = true;
+                Container.IsDirty = true;
             }
         }
     }

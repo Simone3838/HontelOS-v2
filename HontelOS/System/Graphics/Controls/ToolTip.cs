@@ -11,7 +11,7 @@ namespace HontelOS.System.Graphics.Controls
     public class ToolTip : SystemControl
     {
         Canvas c = Kernel.canvas;
-        Style Style = Kernel.style;
+        Style Style = StyleManager.Style;
 
         public string Text;
         public ToolTipOrginDirection OrginDirection;
@@ -24,6 +24,8 @@ namespace HontelOS.System.Graphics.Controls
             OrginDirection = orginDirection;
             OrginX = orginX;
             OrginY = orginY;
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; });
         }
 
         public void Show() => Kernel.systemControls.Add(this);

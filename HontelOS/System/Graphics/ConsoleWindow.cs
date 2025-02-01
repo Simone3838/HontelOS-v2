@@ -17,7 +17,7 @@ namespace HontelOS.System.Graphics
     {
         Canvas c = Kernel.canvas;
         public Console console;
-        public Style Style = Kernel.style;
+        public Style Style = StyleManager.Style;
 
         public string Title { get; set; }
         public Image Icon { get; set; }
@@ -28,10 +28,10 @@ namespace HontelOS.System.Graphics
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public int ViewX;
-        public int ViewY;
-        public int ViewXUpd;
-        public int ViewYUpd;
+        public int ControlDrawOffsetX;
+        public int ControlDrawOffsetY;
+        public int ControlDrawOffsetXUpd;
+        public int ControlDrawOffsetYUpd;
 
         public bool IsVisable { get; set; } = true;
         public bool CanClose { get; set; } = true;
@@ -61,6 +61,9 @@ namespace HontelOS.System.Graphics
             Width = width;
             Height = height;
             console = new Console(width, height);
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; IsDirty = true; });
+            SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; IsDirty = true; });
         }
 
         public virtual void CustomUpdate() { return; }
@@ -122,7 +125,7 @@ namespace HontelOS.System.Graphics
                     Minimize();
             }
 
-            ViewX = X; ViewY = Y + 32;
+            ControlDrawOffsetX = X; ControlDrawOffsetY = Y + 32;
 
             if (Y < 32)
                 Y = 32;

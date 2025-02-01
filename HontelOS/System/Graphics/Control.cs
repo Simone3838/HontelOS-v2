@@ -14,10 +14,10 @@ namespace HontelOS.System.Graphics
 {
     public abstract class Control
     {
-        public Window Window;
+        public IControlContainer Container;
 
         public DirectBitmap c { get; private set; }
-        public Style Style = Kernel.style;
+        public Style Style = StyleManager.Style;
 
         public int X;
         public int Y;
@@ -39,27 +39,38 @@ namespace HontelOS.System.Graphics
         public List<Action> OnEndHover = new();
         public List<Action> OnMouseMove = new();
 
-        public Control(Window window)
+        public Control(IControlContainer container)
         {
-            Window = window;
-            c = Window.canvas;
+            Container = container;
+            c = Container.canvas;
 
-            OnClick.Add(() => { Window.IsDirty = true; });
-            OnEndClick.Add(() => { Window.IsDirty = true; });
-            OnClickSec.Add(() => { Window.IsDirty = true; });
-            OnStartHover.Add(() => { Window.IsDirty = true; });
-            OnEndHover.Add(() => { Window.IsDirty = true; });
+            OnClick.Add(() => { Container.IsDirty = true; });
+            OnEndClick.Add(() => { Container.IsDirty = true; });
+            OnClickSec.Add(() => { Container.IsDirty = true; });
+            OnStartHover.Add(() => { Container.IsDirty = true; });
+            OnEndHover.Add(() => { Container.IsDirty = true; });
 
-            Window.Controls.Add(this);
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; });
+
+            Container.Controls.Add(this);
         }
 
-        public virtual void Draw() { }
+        public virtual void Draw()
+        {
+            X += Container.OffsetX;
+            Y += Container.OffsetY;
+        }
+        public void DoneDrawing()
+        {
+            X -= Container.OffsetX;
+            Y -= Container.OffsetY;
+        }
         public virtual void Update()
         {
             if (Kernel.MouseClick())
                 IsSelected = false;
 
-            if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y, Window.ViewX + X + Width, Window.ViewY + Y + Height))
+            if (Kernel.MouseInArea(Container.ContainerX + X, Container.ContainerY + Y, Container.ContainerX + X + Width, Container.ContainerY + Y + Height))
             {
                 Kernel.cursor = Cursor;
 

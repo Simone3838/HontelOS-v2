@@ -18,7 +18,8 @@ namespace HontelOS.System.User
 
         public static string[] Default = new string[]
         {
-            "Resolution;1920x1200"
+            "Resolution;1920x1200",
+            "Style;L"
         };
 
         public static void Reset()
@@ -45,17 +46,17 @@ namespace HontelOS.System.User
 
         public static void Unload() => settingsDic.Clear();
 
-        public static string Get(string key) { return settingsDic[key]; }
+        public static string Get(string key) { if (settingsDic.ContainsKey(key)) return settingsDic[key]; else return null; }
 
-        public void Set(string key, string value)
+        public static void Set(string key, string value) => settingsDic[key] = value;
+
+        public static void Push()
         {
-            settingsDic[key] = value;
-
             List<string> newFile = new List<string>();
-            foreach(var setting in settingsDic)
+            foreach (var setting in settingsDic)
                 newFile.Add($"{setting.Key};{setting.Value}");
 
-            File.WriteAllLines("0:\\HontelOS\\settings.ini", newFile);
+            File.WriteAllLines(path, newFile.ToArray());
         }
     }
 }

@@ -14,19 +14,23 @@ namespace HontelOS.System.Applications.TextEditor
 {
     public class TextEditorProgram : Window
     {
-
         public TextAreaBox textArea;
         public string filePath = "";
 
         public TextEditorProgram(string arg) : base("Text Editor", WindowStyle.Normal, (int)Kernel.screenWidth / 2 - 450, (int)Kernel.screenHeight / 2 - 300, 900, 600)
         {
-            new Button("Save", new Action(Save), 5, 5, 100, 25, this);
+            Page p = Pages[0];
 
-            textArea = new TextAreaBox("", 0, 35, Width, Height - 35, this);
+            new Button("Save", new Action(Save), 5, 5, 100, 25, p);
+
+            textArea = new TextAreaBox("", 0, 35, Width, Height - 35, p);
 
             if (File.Exists(arg))
             {
-                textArea.Text = File.ReadAllLines(arg).ToList();
+                var lines = File.ReadAllLines(arg).ToList();
+                if (lines.Count == 0)
+                    lines.Add("");
+                textArea.Text = lines;
                 filePath = arg;
             }
             else

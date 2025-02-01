@@ -22,6 +22,7 @@ namespace HontelOS.System.Graphics
 
     public class Console
     {
+        Style style = StyleManager.Style;
         public DirectBitmap canvas;
 
         public bool ScrollMode = false;
@@ -51,12 +52,13 @@ namespace HontelOS.System.Graphics
         public Console(int width, int height)
         {
             InitConsole(width, height);
+            SystemEvents.OnStyleChanged.Add(() => { style = StyleManager.Style; });
         }
 
         public void InitConsole(int width, int height)
         {
-            mCols = width / Kernel.style.SystemFont.Width - 1;
-            mRows = height / Kernel.style.SystemFont.Height - 2;
+            mCols = width / style.SystemFont.Width - 1;
+            mRows = height / style.SystemFont.Height - 2;
 
             _text = new Cell[mCols * mRows];
 
@@ -73,8 +75,8 @@ namespace HontelOS.System.Graphics
 
         public void Resize(int width, int height)
         {
-            int newCols = width / Kernel.style.SystemFont.Width - 1;
-            int newRows = height / Kernel.style.SystemFont.Height - 2;
+            int newCols = width / style.SystemFont.Width - 1;
+            int newRows = height / style.SystemFont.Height - 2;
 
             Cell[] newText = new Cell[newCols * newRows];
 
@@ -118,19 +120,19 @@ namespace HontelOS.System.Graphics
                     if (_text[index].Char == 0 || _text[index].Char == '\n')
                         continue;
 
-                    WriteByte(_text[index].Char, 0 + j * Kernel.style.SystemFont.Width, 0 + i * Kernel.style.SystemFont.Height, _text[index].ForegroundColor);
+                    WriteByte(_text[index].Char, 0 + j * style.SystemFont.Width, 0 + i * style.SystemFont.Height, _text[index].ForegroundColor);
                 }
             }
 
             if (IsReadingUserInput)
             {
-                int startX = mX * Kernel.style.SystemFont.Width;
-                int startY = mY * Kernel.style.SystemFont.Height;
+                int startX = mX * style.SystemFont.Width;
+                int startY = mY * style.SystemFont.Height;
 
                 for (int i = 0; i < UserInput.Length; i++)
                 {
                     char inputChar = UserInput[i];
-                    WriteByte(inputChar, startX + i * Kernel.style.SystemFont.Width, startY, ForegroundColor);
+                    WriteByte(inputChar, startX + i * style.SystemFont.Width, startY, ForegroundColor);
                 }
             }
 
@@ -177,15 +179,15 @@ namespace HontelOS.System.Graphics
 
         public void WriteByte(char ch, int mX, int mY, Color color)
         {
-            canvas.DrawChar(ch, Kernel.style.SystemFont, color, mX, mY);
+            canvas.DrawChar(ch, style.SystemFont, color, mX, mY);
         }
 
         public void SetCursorPos(int mX, int mY)
         {
             if (CursorVisible)
             {
-                canvas.DrawFilledRectangle(ForegroundColor, 0 + mX * Kernel.style.SystemFont.Width,
-                    0 + mY * Kernel.style.SystemFont.Height + Kernel.style.SystemFont.Height, 8, 4);
+                canvas.DrawFilledRectangle(ForegroundColor, 0 + mX * style.SystemFont.Width,
+                    0 + mY * style.SystemFont.Height + style.SystemFont.Height, 8, 4);
             }
         }
 

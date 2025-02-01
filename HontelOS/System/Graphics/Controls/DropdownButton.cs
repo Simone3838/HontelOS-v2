@@ -1,26 +1,25 @@
 ﻿/*
 * PROJECT:          HontelOS
-* CONTENT:          Context menu button control
+* CONTENT:          Dropdown button control
 * PROGRAMMERS:      Jort van Dalen
 */
 
 using Cosmos.System;
 using System;
-using System.Drawing;
 
 namespace HontelOS.System.Graphics.Controls
 {
-    public class ContextMenuButton : Control
+    public class DropdownButton : Control
     {
-        public string Text;
         string[] items;
         Action<int>[] actions;
+        public int selectedIndex;
 
-        public ContextMenuButton(string text, string[] items, Action<int>[] actionsForItems, int x, int y, int width, int height, IControlContainer container) : base(container)
+        public DropdownButton(string[] items, int selectedIndex, Action<int>[] onItemSelected, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
-            Text = text;
+            this.selectedIndex = selectedIndex;
             this.items = items;
-            actions = actionsForItems;
+            actions = onItemSelected;
 
             Width = width;
             Height = height;
@@ -41,7 +40,7 @@ namespace HontelOS.System.Graphics.Controls
             else
                 c.DrawFilledRoundedRectangle(Style.Button_NormalColor, X, Y, Width, Height, 5);
 
-            c.DrawString(Text, Style.SystemFont, Style.Button_TextColor, X + Width / 2 - Style.SystemFont.Width * Text.Length / 2, Y + Height / 2 - Style.SystemFont.Height / 2);
+            c.DrawString(items[selectedIndex], Style.SystemFont, Style.Button_TextColor, X + Width / 2 - Style.SystemFont.Width * items[selectedIndex].Length / 2, Y + Height / 2 - Style.SystemFont.Height / 2);
 
             DoneDrawing();
         }
@@ -51,7 +50,14 @@ namespace HontelOS.System.Graphics.Controls
             base.Update();
             if (IsHovering && Kernel.MouseClick())
             {
-                ContextMenu menu = new ContextMenu(items, actions, Container.ContainerX + X, Container.ContainerY + Y + Height, Width);
+                Action<int>[] act = new Action<int>[actions.Length];
+                for (int i = 0; i < actions.Length; i++)
+                {
+                    int index = i;
+                    act[i] = (_) => { actions[index].Invoke(_); selectedIndex = index; };
+                }
+
+                ContextMenu menu = new ContextMenu(items, act, Container.ContainerX + X, Container.ContainerY + Y + Height, Width);
                 menu.Show();
             }
         }

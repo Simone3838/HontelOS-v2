@@ -7,7 +7,6 @@
 using Cosmos.System;
 using HontelOS.System.Input;
 using System;
-using System.Drawing;
 
 namespace HontelOS.System.Graphics.Controls
 {
@@ -18,7 +17,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public Action<string> OnSubmit;
 
-        public TextBox(string placeholder, Action<string> onSubmit, int x, int y, int width, int height, Window window) : base(window)
+        public TextBox(string placeholder, Action<string> onSubmit, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
             Placeholder = placeholder;
             OnSubmit = onSubmit;
@@ -32,6 +31,8 @@ namespace HontelOS.System.Graphics.Controls
 
         public override void Draw()
         {
+            base.Draw();
+
             if (IsDisabled)
                 c.DrawFilledRoundedRectangle(Style.TextBox_DisabledColor, X, Y, Width, Height, 5);
             else if (IsHovering)
@@ -43,6 +44,8 @@ namespace HontelOS.System.Graphics.Controls
                 c.DrawString(Placeholder, Style.SystemFont, Style.TextBox_PlaceholderTextColor, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
             else
                 c.DrawString(Text, Style.SystemFont, Style.TextBox_TextColor, X + 10, Y + Height / 2 - Style.SystemFont.Height / 2);
+
+            DoneDrawing();
         }
 
         public override void Update()
@@ -62,7 +65,7 @@ namespace HontelOS.System.Graphics.Controls
                 else
                     Text += KeyboardManagerExt.ReadKey().KeyChar;
 
-                Window.IsDirty = true;
+                Container.IsDirty = true;
             }
         }
     }

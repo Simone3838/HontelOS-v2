@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="XSharp" Version="10.0.0" />
+		<PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604;NU1605" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\HontelOS\HontelOS.csproj" />
+	</ItemGroup>
+
+</Project>

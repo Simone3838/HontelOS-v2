@@ -58,6 +58,12 @@ namespace HontelOS.System.Graphics
         public Color ItemsList_SelectedColor;
         public Color ItemsList_SelectedTextColor;
         public Color ItemsList_TextColor;
+
+        public Color WindowNavBar_BackgroundColor;
+        public Color WindowNavBar_TextColor;
+        public Color WindowNavBar_HoverColor;
+        public Color WindowNavBar_SelectedTextColor;
+        public Color WindowNavBar_SelectedColor;
         #endregion
     }
 
@@ -107,6 +113,12 @@ namespace HontelOS.System.Graphics
             ItemsList_SelectedColor = Color.FromArgb(0, 122, 255);
             ItemsList_SelectedTextColor = Color.White;
             ItemsList_TextColor = Color.Black;
+
+            WindowNavBar_BackgroundColor = Color.LightGray;
+            WindowNavBar_TextColor = Color.Black;
+            WindowNavBar_HoverColor = Color.FromArgb(230, 230, 230);
+            WindowNavBar_SelectedColor = Color.FromArgb(0, 122, 255);
+            WindowNavBar_SelectedTextColor = Color.White;
         }
     }
 
@@ -154,8 +166,14 @@ namespace HontelOS.System.Graphics
             ItemsList_BackgroundColor = Color.FromArgb(60, 60, 60);
             ItemsList_HoverColor = Color.FromArgb(80, 80, 80);
             ItemsList_SelectedColor = Color.FromArgb(60, 60, 255);
-            ItemsList_SelectedTextColor = Color.White;
             ItemsList_TextColor = Color.White;
+            ItemsList_SelectedTextColor = Color.White;
+
+            WindowNavBar_BackgroundColor = Color.FromArgb(60, 60, 60);
+            WindowNavBar_TextColor = Color.White;
+            WindowNavBar_HoverColor = Color.FromArgb(80, 80, 80);
+            WindowNavBar_SelectedColor = Color.FromArgb(60, 60, 255);
+            WindowNavBar_SelectedTextColor = Color.White;
         }
     }
 

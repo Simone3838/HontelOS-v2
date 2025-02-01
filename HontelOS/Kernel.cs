@@ -32,9 +32,8 @@ namespace HontelOS
     public class Kernel : Sys.Kernel
     {
         public static Canvas canvas;
-        public static Style style;
-        Dock dock;
-        TopBar topBar;
+        static Dock dock;
+        static TopBar topBar;
         public static CosmosVFS fileSystem;
 
         public static AudioDriver audioDriver;
@@ -69,13 +68,13 @@ namespace HontelOS
         {
             try
             {
-                style = new LightStyle();
-
                 fileSystem = new CosmosVFS();
                 VFSManager.RegisterVFS(fileSystem);
 
-                Settings.Reset();
+                //Settings.Reset();
                 Settings.Load();
+
+                StyleManager.Init();
 
                 // I don't know how to use the Cosmos Audio interface this correctly, i'll look into it later
                 audioMixer = new AudioMixer();
@@ -98,7 +97,7 @@ namespace HontelOS
                     screenWidth = uint.Parse(splitResFromSettings[0]);
                     screenHeight = uint.Parse(splitResFromSettings[1]);
                 }
-                
+
                 canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode(screenWidth, screenHeight, ColorDepth.ColorDepth32));
 
                 // Boot progress image
@@ -244,15 +243,27 @@ namespace HontelOS
             MouseManager.ResetScrollDelta();
         }
 
+        public static void SetResolution(Mode mode)
+        {
+            if (!canvas.AvailableModes.Contains(mode)) return;
+
+            canvas.Mode = mode;
+            screenWidth = mode.Width;
+            screenHeight = mode.Height;
+            MouseManager.ScreenWidth = mode.Width;
+            MouseManager.ScreenHeight = mode.Height;
+            foreach (var a in SystemEvents.OnCanvasChanged) a.Invoke();
+        }
+
         public static void Reboot()
         {
             ShutdownPrepare();
-            Sys.Power.Reboot();
+            Power.Reboot();
         }
         public static void Shutdown()
         {
             ShutdownPrepare();
-            Sys.Power.Shutdown();
+            Power.Shutdown();
         }
 
         static void ShutdownPrepare()
@@ -261,10 +272,12 @@ namespace HontelOS
             canvas.DrawImage(logo, (int)screenWidth / 2 - (int)screenHeight / 8, (int)screenHeight / 2 - (int)screenHeight / 8, (int)screenHeight / 4, (int)screenHeight / 4);
             canvas.Display();
 
-            foreach (int wid in WindowManager.Windows.Keys)
-                WindowManager.Unregister(wid);
+            foreach (IWindow w in WindowManager.Windows.Values)
+                w.ForceClose();
             foreach (Process p in Processes)
                 p.Kill();
+
+            Settings.Push();
         }
         #endregion
 

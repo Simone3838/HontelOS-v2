@@ -9,7 +9,6 @@ using Cosmos.System.Graphics.Fonts;
 using HontelOS.System.Input;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace HontelOS.System.Graphics.Controls
 {
@@ -23,7 +22,7 @@ namespace HontelOS.System.Graphics.Controls
 
         public List<Action<int>> OnSubmit = new();
 
-        public ItemsList(List<string> items, int x, int y, int width, int height, Window window) : base(window)
+        public ItemsList(List<string> items, int x, int y, int width, int height, IControlContainer container) : base(container)
         {
             Items = items;
 
@@ -31,11 +30,13 @@ namespace HontelOS.System.Graphics.Controls
             Y = y;
             Width = width;
             Height = height;
-            OnMouseMove.Add(() => Window.IsDirty = true);
+            OnMouseMove.Add(() => Container.IsDirty = true);
         }
 
         public override void Draw()
         {
+            base.Draw();
+
             c.DrawFilledRoundedRectangle(Style.ItemsList_BackgroundColor, X, Y, Width, Height, 5);
 
             int visibleItemCount = Height / itemHeight;
@@ -51,9 +52,9 @@ namespace HontelOS.System.Graphics.Controls
                     break;
                 if (!string.IsNullOrEmpty(Items[itemIndex]))
                 {
-                    if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Window.ViewX + X + Width, Window.ViewY + Y + i * itemHeight + itemHeight) && SelectedIndex != i)
+                    if (Kernel.MouseInArea(Container.ContainerX + X, Container.ContainerY + Y + i * itemHeight, Container.ContainerX + X + Width, Container.ContainerY + Y + i * itemHeight + itemHeight) && SelectedIndex != i)
                         c.DrawFilledRoundedRectangle(Style.ItemsList_HoverColor, X, Y + i * itemHeight, Width, itemHeight, 5);
-                    if (Kernel.MouseInArea(Window.ViewX + X, Window.ViewY + Y + i * itemHeight, Window.ViewX + X + Width, Window.ViewY + Y + i * itemHeight + itemHeight) && Kernel.MouseClick())
+                    if (Kernel.MouseInArea(Container.ContainerX + X, Container.ContainerY + Y + i * itemHeight, Container.ContainerX + X + Width, Container.ContainerY + Y + i * itemHeight + itemHeight) && Kernel.MouseClick())
                         SelectedIndex = i;
                     if (SelectedIndex == i)
                     {
@@ -64,6 +65,8 @@ namespace HontelOS.System.Graphics.Controls
                         c.DrawString(Items[itemIndex], PCScreenFont.Default, Style.ItemsList_TextColor, X + 2, Y + i * itemHeight);
                 }
             }
+
+            DoneDrawing();
         }
 
         public override void Update()
@@ -83,7 +86,7 @@ namespace HontelOS.System.Graphics.Controls
                 if((key == ConsoleKeyEx.UpArrow || key == ConsoleKeyEx.DownArrow) && SelectedIndex >= Items.Count)
                     SelectedIndex = Items.Count - 1;
 
-                Window.IsDirty = true;
+                Container.IsDirty = true;
             }
             if (IsHovering)
             {

@@ -17,49 +17,51 @@ namespace HontelOS.System.Graphics
 
         public MessageBox(string title, string message, Action<MessageBoxResult> onSubmit, MessageBoxButtons buttons) : base(title, WindowStyle.Dialog, (int)Kernel.screenWidth / 2 - 400, (int)Kernel.screenHeight / 2 - 300, 200, 100 + 45)
         {
+            Page p = Pages[0];
+
             Resize(X, Y, Style.SystemFont.Width * message.Length + 50, Height);
             this.onSubmit = onSubmit;
             OnClose.Add(onClose);
 
-            new Label(message, null, Color.Empty, 25, (Height - 45) / 2 - Style.SystemFont.Height / 2, this);
+            new Label(message, null, Color.Empty, 25, (Height - 45) / 2 - Style.SystemFont.Height / 2, p);
 
             WindowManager.Register(this);
 
             switch (buttons)
             {
                 case MessageBoxButtons.Ok:
-                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, this);
+                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, p);
                     break;
                 case MessageBoxButtons.OkCancel:
-                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, this);
-                    new Button("Cancel", new Action(clickCancel), 70, Height - 35, 75, 25, this);
+                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, p);
+                    new Button("Cancel", new Action(clickCancel), 70, Height - 35, 75, 25, p);
                     break;
                 case MessageBoxButtons.OkRetry:
-                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, this);
-                    new Button("Retry", new Action(clickRetry), 70, Height - 35, 75, 25, this);
+                    new Button("Ok", new Action(clickOk), 10, Height - 35, 50, 25, p);
+                    new Button("Retry", new Action(clickRetry), 70, Height - 35, 75, 25, p);
                     break;
                 case MessageBoxButtons.YesNo:
-                    new Button("Yes", new Action(clickYes), 10, Height - 35, 50, 25, this);
-                    new Button("No", new Action(clickNo), 70, Height - 35, 50, 25, this);
+                    new Button("Yes", new Action(clickYes), 10, Height - 35, 50, 25, p);
+                    new Button("No", new Action(clickNo), 70, Height - 35, 50, 25, p);
                     break;
                 case MessageBoxButtons.YesNoCancel:
-                    new Button("Yes", new Action(clickYes), 10, Height - 35, 50, 25, this);
-                    new Button("No", new Action(clickNo), 70, Height - 35, 50, 25, this);
-                    new Button("Cancel", new Action(clickCancel), 130, Height - 35, 75, 25, this);
+                    new Button("Yes", new Action(clickYes), 10, Height - 35, 50, 25, p);
+                    new Button("No", new Action(clickNo), 70, Height - 35, 50, 25, p);
+                    new Button("Cancel", new Action(clickCancel), 130, Height - 35, 75, 25, p);
                     break;
                 case MessageBoxButtons.AbortRetry:
-                    new Button("Abort", new Action(clickAbort), 10, Height - 35, 75, 25, this);
-                    new Button("Retry", new Action(clickRetry), 95, Height - 35, 75, 25, this);
+                    new Button("Abort", new Action(clickAbort), 10, Height - 35, 75, 25, p);
+                    new Button("Retry", new Action(clickRetry), 95, Height - 35, 75, 25, p);
                     break;
                 case MessageBoxButtons.AbortRetryIgnore:
-                    new Button("Abort", new Action(clickAbort), 10, Height - 35, 75, 25, this);
-                    new Button("Retry", new Action(clickRetry), 95, Height - 35, 75, 25, this);
-                    new Button("Ignore", new Action(clickIgnore), 180, Height - 35, 75, 25, this);
+                    new Button("Abort", new Action(clickAbort), 10, Height - 35, 75, 25, p);
+                    new Button("Retry", new Action(clickRetry), 95, Height - 35, 75, 25, p);
+                    new Button("Ignore", new Action(clickIgnore), 180, Height - 35, 75, 25, p);
                     break;
                 case MessageBoxButtons.CancelTryContinue:
-                    new Button("Cancel", new Action(clickCancel), 10, Height - 35, 75, 25, this);
-                    new Button("Try", new Action(clickTry), 95, Height - 35, 50, 25, this);
-                    new Button("Continue", new Action(clickContinue), 155, Height - 35, 100, 25, this);
+                    new Button("Cancel", new Action(clickCancel), 10, Height - 35, 75, 25, p);
+                    new Button("Try", new Action(clickTry), 95, Height - 35, 50, 25, p);
+                    new Button("Continue", new Action(clickContinue), 155, Height - 35, 100, 25, p);
                     break;
             }
         }

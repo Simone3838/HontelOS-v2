@@ -16,8 +16,8 @@ namespace HontelOS.System.Graphics
     public class Window : IWindow
     {
         Canvas c = Kernel.canvas;
-        public DirectBitmap canvas;
-        public Style Style = Kernel.style;
+        public DirectBitmap canvas { get; set; }
+        public Style Style = StyleManager.Style;
 
         public string Title { get; set; }
         public Image Icon { get; set; }
@@ -29,10 +29,8 @@ namespace HontelOS.System.Graphics
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public int ViewX;
-        public int ViewY;
-        public int ViewXUpd;
-        public int ViewYUpd;
+        public int ContainerX;
+        public int ContainerY;
 
         public bool IsVisable { get; set; } = true;
         public bool CanClose { get; set; } = true;
@@ -42,7 +40,15 @@ namespace HontelOS.System.Graphics
         public bool DisableMaximizeButton = false;
         public bool DisableMinimizeButton = false;
 
-        public List<Control> Controls = new List<Control>();
+        public WindowNavBar NavBar;
+
+        public List<Page> Pages = new List<Page>();
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set { _currentPage = value; Pages[value].IsDirty = true; }
+        }
+        private int _currentPage = 0;
 
         public List<Action> OnClose = new();
 
@@ -67,7 +73,12 @@ namespace HontelOS.System.Graphics
             Width = width;
             Height = height;
             canvas = new DirectBitmap(width, height);
+            Pages.Add(new Page("Main", this));
+            NavBar = new WindowNavBar(this);
             BackgroundColor = Style.Window_BackgroundColor;
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; if (BackgroundColor == StyleManager.PreviousStyle.Window_BackgroundColor) BackgroundColor = StyleManager.Style.Window_BackgroundColor; Pages[CurrentPage].IsDirty = true; });
+            SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; IsDirty = true; });
         }
 
         public virtual void CustomUpdate() { return; }
@@ -136,8 +147,9 @@ namespace HontelOS.System.Graphics
 
             canvas.Clear(BackgroundColor);
 
-            foreach (Control c in Controls)
-                c.Draw();
+            Pages[CurrentPage].Draw();
+
+            NavBar.Draw();
 
             if (WindowStyle != WindowStyle.Borderless)
                 c.DrawImage(canvas.Bitmap, X, Y + 32, true);
@@ -170,7 +182,7 @@ namespace HontelOS.System.Graphics
                         Minimize();
                 }
 
-                ViewX = X; ViewY = Y + 32;
+                ContainerX = X; ContainerY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Dialog)
             {
@@ -189,7 +201,7 @@ namespace HontelOS.System.Graphics
                         Close();
                 }
 
-                ViewX = X; ViewY = Y + 32;
+                ContainerX = X; ContainerY = Y + 32;
             }
             else if (WindowStyle == WindowStyle.Borderless)
             {
@@ -202,7 +214,7 @@ namespace HontelOS.System.Graphics
                         WindowManager.SetFocused(WID);
                 }
 
-                ViewX = X; ViewY = Y;
+                ContainerX = X; ContainerY = Y;
             }
 
             if (Y < 32)
@@ -211,8 +223,11 @@ namespace HontelOS.System.Graphics
             if (MouseManager.MouseState != MouseState.Left && isHoldingHandel)
                 isHoldingHandel = false;
 
-            foreach (Control c in Controls)
-                c.Update();
+            NavBar.UpdateWindow();
+
+            Pages[CurrentPage].Update();
+
+            NavBar.Update();
 
             CustomUpdate();
         }
@@ -254,6 +269,9 @@ namespace HontelOS.System.Graphics
             Width = width;
             Height = height;
             canvas = new DirectBitmap(width, height);
+            NavBar.c = canvas;
+            foreach (Page p in Pages)
+                p.canvas = canvas;
             IsDirty = true;
         }
     }

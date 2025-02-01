@@ -16,7 +16,7 @@ namespace HontelOS.System
     public class Dock
     {
         Canvas c = Kernel.canvas;
-        Style Style = Kernel.style;
+        Style Style = StyleManager.Style;
 
         public int dockWidth = 74;
         public int items = 1;
@@ -29,6 +29,9 @@ namespace HontelOS.System
         public Dock()
         {
             WindowManager.OnWindowsListUpdate.Add(OnItemsUpdate);
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; });
+            SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; Update(); OnItemsUpdate(); });
         }
 
         public void Draw()
@@ -73,7 +76,6 @@ namespace HontelOS.System
 
             for (int i = 0; i < WindowManager.Windows.Count; i++)
             {
-                // Adjusted collision box for each window icon
                 int iconPosX = posX + 84 + i * 74;
                 int iconPosY = posY + 10;
 

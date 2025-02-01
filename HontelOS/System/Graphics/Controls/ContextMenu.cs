@@ -14,7 +14,7 @@ namespace HontelOS.System.Graphics.Controls
     public class ContextMenu : SystemControl
     {
         Canvas c = Kernel.canvas;
-        Style Style = Kernel.style;
+        Style Style = StyleManager.Style;
 
         public string[] items;
         public Action<int>[] actions;
@@ -29,6 +29,8 @@ namespace HontelOS.System.Graphics.Controls
             this.width = width;
             this.x = x;
             this.y = y;
+
+            SystemEvents.OnStyleChanged.Add(() => { Style = StyleManager.Style; });
         }
 
         public void Show() => Kernel.systemControls.Add(this);

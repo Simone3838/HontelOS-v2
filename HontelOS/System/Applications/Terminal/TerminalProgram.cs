@@ -41,40 +41,43 @@ namespace HontelOS.System.Applications.Terminal
 
             switch (command)
             {
-                case "shutdown":
+                case "shutdown": // shut device down
                     Kernel.Shutdown();
                     break;
-                case "reboot":
+                case "reboot": // reboot device
                     Kernel.Reboot();
                     break;
-                case "msgbox":
+                case "msgbox": // display messagebox
                     MSGBOX(args);
                     break;
-                case "ls":
+                case "ls": // list directory
                     LS();
                     break;
-                case "lspci":
+                case "lspci": // list PCI devices
                     LSPCI();
                     break;
-                case "showdir":
+                case "resetsettings": // reset settings
+                    User.Settings.Reset();
+                    break;
+                case "showdir": // open Files in directory
                     SHOWDIR(args[0]);
                     break;
-                case "rm":
+                case "rm": // delete file
                     RM(args[0]);
                     break;
-                case "create":
+                case "create": // create file
                     CREATE(args[0]);
                     break;
-                case "createdir":
+                case "createdir": // create directory
                     CREATEDIR(args[0]);
                     break;
-                case "rmdir":
+                case "rmdir": // delete directory
                     RMDIR(args[0]);
                     break;
-                case "cd":
+                case "cd": // jump to
                     CD(args[0]);
                     break;
-                case "exit":
+                case "exit": // close terminal
                     Close();
                     break;
                 default:
