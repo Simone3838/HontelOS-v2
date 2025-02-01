@@ -2,6 +2,7 @@
 * PROJECT:          HontelOS
 * CONTENT:          Http utils class
 * PROGRAMMER(S):    Valentin Charbonnier <valentinbreiz@gmail.com>
+* MODIFIED BY:      Jort van Dalen
 */
 
 using Cosmos.System.Network.Config;

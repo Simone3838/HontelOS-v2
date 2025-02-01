@@ -22,6 +22,7 @@ namespace HontelOS.System.Graphics
                 ns = new DarkStyle();
 
             Style = ns;
+            PreviousStyle = ns;
         }
 
         public static void SetStyle(Style style)

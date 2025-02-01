@@ -49,12 +49,12 @@ namespace HontelOS.System
                     string[] _items = { "Files", "About", "Settings", "Terminal", "Restart", "Shutdown" };
                     Action<int>[] _actions =
                     {
-                    index => new FilesProgram(),
-                    index => new AboutProgram(),
-                    index => new SettingsProgram(),
-                    index => new TerminalProgram(),
-                    index => Kernel.Reboot(),
-                    index => Kernel.Shutdown(),
+                        index => new FilesProgram(),
+                        index => new AboutProgram(),
+                        index => new SettingsProgram(),
+                        index => new TerminalProgram(),
+                        index => Kernel.Reboot(),
+                        index => Kernel.Shutdown(),
                     };
                     ContextMenu menu = new ContextMenu(_items, _actions, 0, 32, 150);
                     menu.Show();

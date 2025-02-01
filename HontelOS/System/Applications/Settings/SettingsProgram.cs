@@ -141,10 +141,7 @@ namespace HontelOS.System.Applications.Settings
             new Label("Updates", null, Color.Empty, 5, 5, p);
         }
 
-        void Set(string key, string value)
-        {
-            _Settings.Add(key, value);
-        }
+        void Set(string key, string value) => _Settings.Add(key, value);
 
         void PushSettings()
         {

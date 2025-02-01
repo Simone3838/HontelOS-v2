@@ -64,7 +64,6 @@ namespace HontelOS.System.Graphics
             SystemEvents.OnCanvasChanged.Add(() => { c = Kernel.canvas; IsDirty = true; });
         }
 
-
         public virtual void Draw(DirectBitmap canvas) { return; }
         public virtual void CustomUpdate() { return; }
 

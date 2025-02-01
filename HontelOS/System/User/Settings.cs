@@ -44,7 +44,7 @@ namespace HontelOS.System.User
             }
         }
 
-        public static void Unload() => settingsDic.Clear();
+        public static void DiscardChanges() => settingsDic.Clear();
 
         public static string Get(string key) { if (settingsDic.ContainsKey(key)) return settingsDic[key]; else return null; }
 

@@ -14,11 +14,19 @@ namespace HontelOS.System.User
 {
     public class User
     {
+        public static string path = "0:\\HontelOS\\users.ini";
+        public static string directory = "0:\\HontelOS";
+
         public static string Username;
         
         public static bool Login(string username, string password)
         {
-            var usersFile = File.ReadAllLines("0:\\HontelOS\\users.ini");
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            if (!File.Exists(path))
+            { File.WriteAllText(path, null); return false; }
+
+            var usersFile = File.ReadAllLines(path);
 
             if (usersFile.Contains($"{username};{SHA256.hash(password)}"))
             {
@@ -35,10 +43,12 @@ namespace HontelOS.System.User
 
         public static bool Create(string username, string password)
         {
-            if (!File.Exists("0:\\HontelOS\\users.ini"))
-                File.WriteAllText("0:\\HontelOS\\users.ini", null);
+            if(!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            if (!File.Exists(path))
+                File.WriteAllText(path, null);
 
-            List<string> usersFile = File.ReadAllLines("0:\\HontelOS\\users.ini").ToList();
+            List<string> usersFile = File.ReadAllLines(path).ToList();
 
             foreach (string line in usersFile)
                 if (line.Split(';')[0] == username)
@@ -51,26 +61,26 @@ namespace HontelOS.System.User
 
             usersFile.Add($"{username};{SHA256.hash(password)}");
 
-            File.WriteAllLines("0:\\HontelOS\\users.ini", usersFile.ToArray());
+            File.WriteAllLines(path, usersFile.ToArray());
 
             return true;
         }
 
         public static void Delete(string username)
         {
-            var usersFile = File.ReadAllLines("0:\\HontelOS\\users.ini");
+            var usersFile = File.ReadAllLines(path);
             List<string> newFile = new List<string>();
 
             foreach (string line in usersFile)
                 if (line.Split(';')[0] != username)
                     newFile.Add(line);
 
-            File.WriteAllLines("0:\\HontelOS\\users.ini", newFile.ToArray());
+            File.WriteAllLines(path, newFile.ToArray());
         }
 
         public static string[] GetUsers()
         {
-            var usersFile = File.ReadAllLines("0:\\HontelOS\\users.ini");
+            var usersFile = File.ReadAllLines(path);
             List<string> users = new List<string>();
 
             foreach(string line in usersFile)
