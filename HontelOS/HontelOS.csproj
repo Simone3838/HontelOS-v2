@@ -17,12 +17,13 @@
 		<Profile>VMware</Profile>
 		<Description>Use VMware Player or Workstation to deploy and debug.</Description>
 		<PxeInterface>192.168.0.8</PxeInterface>
-		<StackCorruptionDetectionEnabled>True</StackCorruptionDetectionEnabled>
+		<StackCorruptionDetectionEnabled>False</StackCorruptionDetectionEnabled>
 		<StackCorruptionDetectionLevel>MethodFooters</StackCorruptionDetectionLevel>
 		<VMWareEdition>Player</VMWareEdition>
 		<DebugEnabled>False</DebugEnabled>
 		<RemoveBootDebugOutput>True</RemoveBootDebugOutput>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<OptimizationLevel>3</OptimizationLevel>
 	</PropertyGroup>
 
 	<PropertyGroup>

@@ -26,6 +26,7 @@ using Cosmos.HAL.Drivers.Audio;
 using Cosmos.System.Audio;
 using HontelOS.Drivers.Audio;
 using Cosmos.HAL.Audio;
+using Cosmos.HAL;
 
 namespace HontelOS
 {
@@ -60,6 +61,10 @@ namespace HontelOS
         static bool mouseClickSecNotice1 = false;
 
         static int heapCounter = 4;
+
+        int _deltaT = 0;
+        int frames = 0;
+        int fps = 0;
 
         //LockScreen
         public static bool isUnlocked { get; internal set; }
@@ -220,6 +225,14 @@ namespace HontelOS
         #region System
         void UpdateSystem()
         {
+            if (_deltaT != RTC.Second)
+            {
+                fps = frames;
+                frames = 0;
+                _deltaT = RTC.Second;
+            }
+            frames++;
+
             mouseClickNotice1 = false;
             mouseClickSecNotice1 = false;
             KeyboardManagerExt.Update();
@@ -258,12 +271,12 @@ namespace HontelOS
         public static void Reboot()
         {
             ShutdownPrepare();
-            Power.Reboot();
+            Sys.Power.Reboot();
         }
         public static void Shutdown()
         {
             ShutdownPrepare();
-            Power.Shutdown();
+            Sys.Power.Shutdown();
         }
 
         static void ShutdownPrepare()
@@ -319,6 +332,7 @@ namespace HontelOS
             canvas.DrawString("RAM usage: " + StorageSizeConverter.Convert(StorageSize.Byte, GCImplementation.GetUsedRAM(), StorageSize.Megabyte).ToString(), PCScreenFont.Default, Color.Blue, 0, 0);
             canvas.DrawString("Canvas Type: " + canvas.Name(), PCScreenFont.Default, Color.Blue, 0, PCScreenFont.Default.Height * 1);
             canvas.DrawString("Processes: " + Processes.Count, PCScreenFont.Default, Color.Blue, 0, PCScreenFont.Default.Height * 2);
+            canvas.DrawString("FPS: " + fps, PCScreenFont.Default, Color.Blue, 0, PCScreenFont.Default.Height * 3);
         }
         #endregion
     }
